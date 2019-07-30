@@ -1,0 +1,7 @@
+.idea/
+gradlew
+gradlew.bat
+.gradle/
+error.log
+rsbox/*
+build/

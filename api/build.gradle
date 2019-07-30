@@ -1,0 +1,11 @@
+plugins {
+    id 'org.jetbrains.dokka' version '0.9.18'
+}
+
+dokka {
+    moduleName = 'api'
+    outputFormat = 'javadoc'
+    outputDirectory = "$buildDir/javadoc"
+    
+    sourceDirs = files('src/main/kotlin/io/rsbox/api')
+}

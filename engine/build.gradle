@@ -1,0 +1,17 @@
+plugins {
+}
+
+apply plugin: 'application'
+
+mainClassName = 'io.rsbox.engine.Launcher'
+
+run {
+    workingDir = rootProject.projectDir
+}
+
+dependencies {
+    compile project(':api')
+    compile project(':engine:net')
+    compile project(':engine:util')
+    compile "org.jetbrains.kotlin:kotlin-reflect:1.3.21"
+}
