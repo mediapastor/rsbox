@@ -1,4 +1,4 @@
-package io.rsbox.api.storage.nbt
+package io.rsbox.engine.model.storage.nbt
 
 /**
  * @author Kyle Escobar

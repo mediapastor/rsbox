@@ -82,7 +82,7 @@ class RSServer(val filestorePath: String, args: Array<String>) : Server {
         filestore.load()
         logger.info { "Loaded cache from path $filestorePath in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}ms."}
 
-        (serviceProvider as ServiceProvider).loadEngineServices()
+        serviceProvider.loadEngineServices()
 
 
         val rsa = RsaKey()

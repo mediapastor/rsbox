@@ -2,5 +2,5 @@ plugins {}
 
 dependencies {
     implementation project(':api')
-    implementation project(':engine:util')
+    implementation project(':util')
 }

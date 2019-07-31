@@ -5,8 +5,11 @@ import io.rsbox.api.Server
 import io.rsbox.engine.service.Service
 import io.rsbox.engine.system.auth.LoginQueue
 import io.rsbox.api.net.login.LoginRequest
+import io.rsbox.engine.model.entity.Client
+import io.rsbox.util.IsaacRandom
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.TimeUnit
 
 /**
  * @author Kyle Escobar
@@ -21,9 +24,9 @@ class LoginService : Service() {
     override fun onStart(server: Server) {
 
         val executor = Executors.newFixedThreadPool(loginThreads,
-            ThreadFactoryBuilder().setNameFormat("auth-queue").setUncaughtExceptionHandler { t, e -> logger.error("Error in thread $t", e)}.build())
+            ThreadFactoryBuilder().setNameFormat("login-queue").setUncaughtExceptionHandler { t, e -> logger.error("Error in thread $t", e)}.build())
 
-        for(i in 0 .. loginThreads) {
+        for(i in 0 until loginThreads) {
             executor.execute(LoginQueue(this))
         }
 
@@ -36,5 +39,26 @@ class LoginService : Service() {
     fun queueLoginRequest(request: LoginRequest) {
         loginQueue.offer(request)
         logger.info("Login request received and has been queued. [username=${request.username}].")
+    }
+
+    internal fun loginGameClient(client: Client, encodeRandom: IsaacRandom, decodeRandom: IsaacRandom) {
+        val p = client.channel.pipeline()
+
+        if(client.channel.isActive) {
+
+            p.remove("handshake_encoder")
+            p.remove("login_decoder")
+            p.remove("login_encoder")
+
+            // TODO build a game packet handler.
+
+            p.addFirst("packet_encoder", null)
+            p.addAfter("packet_encoder", "message_encoder", null)
+
+            p.addBefore("handler", "packet_decoder", null)
+
+            client.channel.flush()
+
+        }
     }
 }

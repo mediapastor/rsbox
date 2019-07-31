@@ -172,8 +172,6 @@ class LoginDecoder(
                 }
             }
 
-            logger.info("Login request recieved for user: {}", username)
-
             val request = LoginRequest(
                 channel = ctx.channel(),
                 username = username,
