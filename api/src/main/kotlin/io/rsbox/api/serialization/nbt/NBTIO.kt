@@ -1,4 +1,4 @@
-package io.rsbox.engine.model.storage.nbt
+package io.rsbox.api.serialization.nbt
 
 /**
  * @author Kyle Escobar
@@ -8,7 +8,10 @@ import java.io.*
 
 fun NBT.save(location: File) {
     val out = DataOutputStream(FileOutputStream(location))
-    NBTWriter.writeTagCompound(out, TagCompound((this as NBTBase).tags))
+    NBTWriter.writeTagCompound(
+        out,
+        TagCompound((this as NBTBase).tags)
+    )
     out.close()
 }
 
@@ -22,7 +25,8 @@ fun nbt(location: File, provideDefault: Boolean = false): NBT {
     return NBTRoot(tc.value)
 }
 
-fun nbt(location: String, provideDefault: Boolean = false) = nbt(File(location), provideDefault)
+fun nbt(location: String, provideDefault: Boolean = false) =
+    nbt(File(location), provideDefault)
 
 object NBTReader {
     private fun readData(di: DataInput, type: Int) = when (type) {
@@ -70,7 +74,12 @@ object NBTReader {
         val len = maxOf(0, di.readInt())
         return if (len > 0) {
             require(type in 1..12, { "Invalid list type: $type" })
-            TagList((0 until len).map { readData(di, type) })
+            TagList((0 until len).map {
+                readData(
+                    di,
+                    type
+                )
+            })
         } else {
             TagList(emptyList())
         }
@@ -79,19 +88,36 @@ object NBTReader {
 
 object NBTWriter {
     private fun writeData(out: DataOutput, tag: TagBase) = when (tag) {
-        is TagEnd       -> Unit
-        is TagByte      -> out.writeByte(tag.value)
-        is TagShort     -> out.writeShort(tag.value)
-        is TagInt       -> out.writeInt(tag.value)
-        is TagLong      -> out.writeLong(tag.value)
-        is TagFloat     -> out.writeFloat(tag.value)
-        is TagDouble    -> out.writeDouble(tag.value)
-        is TagByteArray -> writeTagArray(out, tag.value, { o, d -> o.writeByte(d) })
-        is TagString    -> writeString(out, tag.value)
-        is TagList      -> writeTagList(out, tag)
-        is TagCompound  -> writeTagCompound(out, tag)
-        is TagIntArray  -> writeTagArray(out, tag.value, DataOutput::writeInt)
-        is TagLongArray -> writeTagArray(out, tag.value, DataOutput::writeLong)
+        is TagEnd -> Unit
+        is TagByte -> out.writeByte(tag.value)
+        is TagShort -> out.writeShort(tag.value)
+        is TagInt -> out.writeInt(tag.value)
+        is TagLong -> out.writeLong(tag.value)
+        is TagFloat -> out.writeFloat(tag.value)
+        is TagDouble -> out.writeDouble(tag.value)
+        is TagByteArray -> writeTagArray(
+            out,
+            tag.value,
+            { o, d -> o.writeByte(d) })
+        is TagString -> writeString(
+            out,
+            tag.value
+        )
+        is TagList -> writeTagList(out, tag)
+        is TagCompound -> writeTagCompound(
+            out,
+            tag
+        )
+        is TagIntArray -> writeTagArray(
+            out,
+            tag.value,
+            DataOutput::writeInt
+        )
+        is TagLongArray -> writeTagArray(
+            out,
+            tag.value,
+            DataOutput::writeLong
+        )
     }
 
     private fun writeString(out: DataOutput, s: String) {

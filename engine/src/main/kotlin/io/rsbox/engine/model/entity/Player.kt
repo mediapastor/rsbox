@@ -1,36 +1,28 @@
 package io.rsbox.engine.model.entity
 
-import io.rsbox.engine.model.storage.nbt.NBT
-import io.rsbox.engine.model.storage.nbt.nbt
+import io.rsbox.api.serialization.nbt.NBTSerializable
+import io.rsbox.api.serialization.nbt.NBTTag
 
 /**
  * @author Kyle Escobar
  */
 
-open class Player {
-
+open class Player : NBTSerializable() {
+    @NBTTag("username")
     lateinit var username: String
 
+    @NBTTag("display_name")
     lateinit var displayName: String
 
-    lateinit var password: String
-
+    @NBTTag("uuid")
     lateinit var uuid: String
 
-    lateinit var currentXteas: IntArray
+    @NBTTag("password")
+    lateinit var password: String
 
+    @NBTTag("current_xteas")
+    lateinit var currentXteas: List<Int>
+
+    @NBTTag("privilege")
     var privilege: Int = 0
-
-    var index: Int = 0
-
-    open fun toNBT(): NBT {
-        val data = nbt()
-        data.string.set("username",username)
-        data.string.set("display_name", displayName)
-        data.string.set("password", password)
-        data.string.set("uuid", uuid)
-        data.ints.set("current_xteas", currentXteas.toList())
-        data.int.set("privilege", privilege)
-        return data
-    }
 }

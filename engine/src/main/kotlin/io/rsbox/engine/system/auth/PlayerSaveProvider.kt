@@ -1,8 +1,10 @@
 package io.rsbox.engine.system.auth
 
 import io.rsbox.api.net.login.LoginRequest
-import io.rsbox.engine.model.storage.nbt.nbt
-import io.rsbox.engine.model.storage.nbt.save
+import io.rsbox.api.serialization.nbt.fromNBT
+import io.rsbox.api.serialization.nbt.nbt
+import io.rsbox.api.serialization.nbt.save
+import io.rsbox.engine.model.Privilege
 import io.rsbox.engine.model.entity.Client
 import org.mindrot.jbcrypt.BCrypt
 import java.io.File
@@ -20,7 +22,7 @@ object PlayerSaveProvider {
             client.displayName = ""
             client.password = BCrypt.hashpw(request.password, BCrypt.gensalt(16))
             client.uuid = UUID.randomUUID().toString()
-            client.currentXteas = request.xteaKeys
+            client.currentXteas = request.xteaKeys.toList()
             client.privilege = 0
 
             val filename = request.username.replace(" ","_")
@@ -35,7 +37,6 @@ object PlayerSaveProvider {
 
     fun loadPlayer(client: Client, request: LoginRequest): PlayerLoadResult {
         try {
-
             val filename = request.username.replace(" ","_")
             val file = File("rsbox/data/saves/${filename}.dat")
 
@@ -48,12 +49,7 @@ object PlayerSaveProvider {
                 return PlayerLoadResult.INVALID_CREDENTIALS
             }
 
-            client.username = save.string.get("username")!!
-            client.displayName = save.string.get("display_name")!!
-            client.password = save.string.get("password")!!
-            client.uuid = save.string.get("uuid")!!
-            client.currentXteas = save.ints.get("current_xteas")!!.toIntArray()
-            client.privilege = save.int.get("privilege")!!
+            client.fromNBT(save)
 
             return PlayerLoadResult.ACCEPTED
         } catch(e : Exception) {

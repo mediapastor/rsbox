@@ -68,7 +68,7 @@ class LoginQueue(private val loginService: LoginService) : Runnable {
 
         when(loginResult) {
             LoginResultType.ACCEPTABLE -> {
-                client.channel.write(LoginResponse(client.index, client.privilege))
+                client.channel.write(LoginResponse(0, client.privilege))
                 loginService.loginGameClient(client, encodeRandom, decodeRandom)
             }
 

@@ -1,4 +1,4 @@
-package io.rsbox.engine.model.storage.nbt
+package io.rsbox.api.serialization.nbt
 
 /**
  * @author Kyle Escobar
@@ -44,9 +44,20 @@ internal abstract class NBTBase : NBT {
     override val float = sv({ it.asFloat() }, ::TagFloat)
     override val double = sv({ it.asDouble() }, ::TagDouble)
     override val string = sv({ it.asString() }, ::TagString)
-    override val nbt = view<String, NBT>({ key -> NBTSubtree(key, this) }, { key, value -> tags += key to TagCompound((value as NBTBase).tags) })
+    override val nbt = view<String, NBT>(
+        { key ->
+            NBTSubtree(
+                key,
+                this
+            )
+        },
+        { key, value -> tags += key to TagCompound((value as NBTBase).tags) })
 
-    override val bools = list({ it.asByte()?.let { it != 0.toByte() } ?: false }, { TagByte(if (it) -1 else 0) })
+    override val bools = list({ it.asByte()?.let { it != 0.toByte() } ?: false }, {
+        TagByte(
+            if (it) -1 else 0
+        )
+    })
     override val bytes = sv({ it.asByteArray() }, ::TagByteArray)
     override val shorts = list({ it.asShort() ?: 0 }, ::TagShort)
     override val ints = sv({ it.asIntArray() }, ::TagIntArray)
@@ -54,7 +65,10 @@ internal abstract class NBTBase : NBT {
     override val floats = list({ it.asFloat() ?: 0f }, ::TagFloat)
     override val doubles = list({ it.asDouble() ?: 0.0 }, ::TagDouble)
     override val strings = list({ it.asString() ?: "" }, ::TagString)
-    override val nbts = list({ NBTRoot(it.asTagCompound() ?: emptyMap()) as NBT }, { TagCompound((it as NBTBase).tags) })
+    override val nbts = list({ NBTRoot(
+        it.asTagCompound() ?: emptyMap()
+    ) as NBT
+    }, { TagCompound((it as NBTBase).tags) })
 
     override val keys: Collection<String>
         get() = tags.keys
@@ -68,10 +82,14 @@ internal abstract class NBTBase : NBT {
     override fun copy() = NBTRoot(tags)
 
     private fun <T : Any> sv(read: (TagBase?) -> T?, write: (T) -> TagBase?) =
-        view<String, T?>({ key -> read(getv(key)) }, { key, value -> setv(key, value?.let(write)) })
+        view<String, T?>(
+            { key -> read(getv(key)) },
+            { key, value -> setv(key, value?.let(write)) })
 
     private fun <T : Any> list(read: (TagBase) -> T, write: (T) -> TagBase) =
-        view<String, List<T>?>({ key -> getv(key).asTagList()?.map(read) }, { key, value -> setv(key, value?.map(write)?.let(::TagList)) })
+        view<String, List<T>?>(
+            { key -> getv(key).asTagList()?.map(read) },
+            { key, value -> setv(key, value?.map(write)?.let(::TagList)) })
 
     fun getv(key: String): TagBase? {
         return tags[key]
