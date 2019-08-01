@@ -25,4 +25,6 @@ interface Server {
      * @param request [LoginRequest] object passed from the network
      */
     fun queueLoginRequest(request: LoginRequest)
+
+    var world: World
 }

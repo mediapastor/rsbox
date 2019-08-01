@@ -9,8 +9,10 @@ import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.rsbox.api.RSBox
 import io.rsbox.api.Server
+import io.rsbox.api.World
 import io.rsbox.api.net.login.LoginRequest
 import io.rsbox.engine.config.ServerPropertiesSpec
+import io.rsbox.engine.model.RSWorld
 import io.rsbox.engine.service.ServiceProvider
 import io.rsbox.engine.service.impl.LoginService
 import io.rsbox.net.modules.rsa.RsaKey
@@ -48,6 +50,8 @@ class RSServer(val filestorePath: String, args: Array<String>) : Server {
 
     val serviceProvider = ServiceProvider(this)
 
+    override lateinit var world: World
+
     fun init() {
 
         RSBox.server = this
@@ -73,6 +77,8 @@ class RSServer(val filestorePath: String, args: Array<String>) : Server {
             config.get("server.cycleTime"),
             config.get("server.playerLimit")
         )
+
+        world = RSWorld(gameContext)
 
         stopwatch.reset().start()
 

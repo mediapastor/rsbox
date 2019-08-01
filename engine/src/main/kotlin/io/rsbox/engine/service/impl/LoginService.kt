@@ -57,6 +57,7 @@ class LoginService : Service() {
 
             p.addBefore("handler", "packet_decoder", null)
 
+            client.login()
             client.channel.flush()
 
         }

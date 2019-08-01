@@ -27,6 +27,8 @@ class LoginQueue(private val loginService: LoginService) : Runnable {
                 val encodeRandom = IsaacRandom(IntArray(request.xteaKeys.size) { request.xteaKeys[it] + 50 })
 
                 val client = Client(request.channel)
+                client.register()
+
                 var loadResult: PlayerLoadResult by Delegates.observable(PlayerLoadResult.INVALID_CREDENTIALS) { _, _, newValue ->
                     playerLoadObserve(newValue, request, client, encodeRandom, decodeRandom)
                 }
