@@ -14,6 +14,7 @@ import io.rsbox.api.net.login.LoginRequest
 import io.rsbox.engine.config.ServerPropertiesSpec
 import io.rsbox.engine.model.RSWorld
 import io.rsbox.engine.service.ServiceProvider
+import io.rsbox.engine.service.impl.GameService
 import io.rsbox.engine.service.impl.LoginService
 import io.rsbox.net.modules.rsa.RsaKey
 import io.rsbox.net.protocol.ClientChannelInitializer
@@ -89,6 +90,10 @@ class RSServer(val filestorePath: String, args: Array<String>) : Server {
         logger.info { "Loaded cache from path $filestorePath in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}ms."}
 
         serviceProvider.loadEngineServices()
+
+        serviceProvider.getService(GameService::class.java)!!.let { gameService ->
+            gameService.packetStructures.load()
+        }
 
 
         val rsa = RsaKey()

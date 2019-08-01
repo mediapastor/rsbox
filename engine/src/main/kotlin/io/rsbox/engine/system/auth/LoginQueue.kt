@@ -5,7 +5,7 @@ package io.rsbox.engine.system.auth
 import io.netty.channel.ChannelFutureListener
 import io.rsbox.api.RSBox
 import io.rsbox.api.net.login.LoginRequest
-import io.rsbox.engine.model.entity.Client
+import io.rsbox.engine.model.entity.RSClient
 import io.rsbox.engine.service.impl.LoginService
 import io.rsbox.net.codec.login.LoginResponse
 import io.rsbox.net.codec.login.LoginResultType
@@ -26,7 +26,7 @@ class LoginQueue(private val loginService: LoginService) : Runnable {
                 val decodeRandom = IsaacRandom(request.xteaKeys)
                 val encodeRandom = IsaacRandom(IntArray(request.xteaKeys.size) { request.xteaKeys[it] + 50 })
 
-                val client = Client(request.channel)
+                val client = RSClient(request.channel)
                 client.register()
 
                 var loadResult: PlayerLoadResult by Delegates.observable(PlayerLoadResult.INVALID_CREDENTIALS) { _, _, newValue ->
@@ -42,7 +42,7 @@ class LoginQueue(private val loginService: LoginService) : Runnable {
         }
     }
 
-    private fun playerLoadObserve(loadResult: PlayerLoadResult, request: LoginRequest, client: Client, encodeRandom: IsaacRandom, decodeRandom: IsaacRandom) {
+    private fun playerLoadObserve(loadResult: PlayerLoadResult, request: LoginRequest, client: RSClient, encodeRandom: IsaacRandom, decodeRandom: IsaacRandom) {
         val loginResult: LoginResultType
         when(loadResult) {
             PlayerLoadResult.NO_ACCOUNT -> {

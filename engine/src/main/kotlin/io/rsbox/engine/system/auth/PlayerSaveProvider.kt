@@ -4,8 +4,7 @@ import io.rsbox.api.net.login.LoginRequest
 import io.rsbox.api.serialization.nbt.fromNBT
 import io.rsbox.api.serialization.nbt.nbt
 import io.rsbox.api.serialization.nbt.save
-import io.rsbox.engine.model.Privilege
-import io.rsbox.engine.model.entity.Client
+import io.rsbox.engine.model.entity.RSClient
 import org.mindrot.jbcrypt.BCrypt
 import java.io.File
 import java.util.*
@@ -16,7 +15,7 @@ import java.util.*
 
 object PlayerSaveProvider {
 
-    fun createPlayer(client: Client, request: LoginRequest): Boolean {
+    fun createPlayer(client: RSClient, request: LoginRequest): Boolean {
         try {
             client.username = request.username
             client.displayName = ""
@@ -35,7 +34,7 @@ object PlayerSaveProvider {
         }
     }
 
-    fun loadPlayer(client: Client, request: LoginRequest): PlayerLoadResult {
+    fun loadPlayer(client: RSClient, request: LoginRequest): PlayerLoadResult {
         try {
             val filename = request.username.replace(" ","_")
             val file = File("rsbox/data/saves/${filename}.dat")

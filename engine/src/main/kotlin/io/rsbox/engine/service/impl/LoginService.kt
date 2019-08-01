@@ -5,11 +5,11 @@ import io.rsbox.api.Server
 import io.rsbox.engine.service.Service
 import io.rsbox.engine.system.auth.LoginQueue
 import io.rsbox.api.net.login.LoginRequest
-import io.rsbox.engine.model.entity.Client
+import io.rsbox.engine.model.entity.RSClient
+import io.rsbox.net.codec.game.GamePacketEncoder
 import io.rsbox.util.IsaacRandom
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
-import java.util.concurrent.TimeUnit
 
 /**
  * @author Kyle Escobar
@@ -41,7 +41,7 @@ class LoginService : Service() {
         logger.info("Login request received and has been queued. [username=${request.username}].")
     }
 
-    internal fun loginGameClient(client: Client, encodeRandom: IsaacRandom, decodeRandom: IsaacRandom) {
+    internal fun loginGameClient(client: RSClient, encodeRandom: IsaacRandom, decodeRandom: IsaacRandom) {
         val p = client.channel.pipeline()
 
         if(client.channel.isActive) {
@@ -50,9 +50,7 @@ class LoginService : Service() {
             p.remove("login_decoder")
             p.remove("login_encoder")
 
-            // TODO build a game packet handler.
-
-            p.addFirst("packet_encoder", null)
+            p.addFirst("packet_encoder", GamePacketEncoder(encodeRandom))
             p.addAfter("packet_encoder", "message_encoder", null)
 
             p.addBefore("handler", "packet_decoder", null)
