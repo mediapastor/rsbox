@@ -20,10 +20,10 @@
   <p align="center">
     An Open-Source Oldschool Runescape Private Server
     <br />
-    <a href="#"><strong>Explore the docs »</strong></a>
+    <a href="https://rsbox.io"><strong>Visit Our Forum »</strong></a>
     <br />
     <br />
-    <a href="#">Quick Start Guide</a>
+    <a href="#">Explore the docs</a>
     ·
     <a href="#">Report Bug</a>
     ·
