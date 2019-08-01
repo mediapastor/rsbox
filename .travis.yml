@@ -6,4 +6,9 @@ dist: xenial
 jdk: openjdk8
 
 script:
-  - ./gradlew build --scan -s
+  - chmod +x gradlew
+
+jobs:
+  include:
+    - stage: build
+      script: ./gradlew build
