@@ -1,8 +1,8 @@
 package io.rsbox.engine.service.impl
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
-import io.rsbox.api.RSBox
-import io.rsbox.api.Server
+import io.rsbox.engine.Launcher
+import io.rsbox.engine.Server
 import io.rsbox.engine.model.world.RSWorld
 import io.rsbox.engine.packets.PacketDecoderSet
 import io.rsbox.engine.packets.PacketEncoderSet
@@ -65,7 +65,7 @@ class GameService : Service() {
     internal val packetDecoders = PacketDecoderSet()
 
     override fun onStart(server: Server) {
-        this.world = RSBox.server.world as RSWorld
+        this.world = Launcher.server.world
         this.loadTasks()
         executor.scheduleAtFixedRate(this::cycle, 0, world.gameContext.cycleTime.toLong(), TimeUnit.MILLISECONDS)
     }

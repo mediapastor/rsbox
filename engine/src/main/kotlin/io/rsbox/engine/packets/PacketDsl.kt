@@ -1,6 +1,6 @@
 package io.rsbox.engine.packets
 
-import io.rsbox.api.net.packet.*
+import io.rsbox.engine.net.packet.*
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap
 
 /**

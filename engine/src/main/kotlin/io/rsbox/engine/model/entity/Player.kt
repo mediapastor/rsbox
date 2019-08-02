@@ -1,9 +1,9 @@
 package io.rsbox.engine.model.entity
 
-import io.rsbox.api.RSBox
-import io.rsbox.api.Server
-import io.rsbox.api.net.packet.Packet
-import io.rsbox.api.serialization.nbt.NBTTag
+import io.rsbox.engine.Launcher
+import io.rsbox.engine.Server
+import io.rsbox.engine.net.packet.Packet
+import io.rsbox.engine.serialization.nbt.NBTTag
 import io.rsbox.engine.model.world.RSWorld
 import io.rsbox.engine.model.world.Tile
 import io.rsbox.engine.packets.impl.PacketOutRebuildLogin
@@ -17,10 +17,7 @@ open class Player : LivingEntity() {
 
     var initiated = false
 
-    val server: Server = RSBox.server
-
-    @NBTTag("username")
-    lateinit var username: String
+    val server: Server = Launcher.server
 
     @NBTTag("display_name")
     lateinit var displayName: String
@@ -28,16 +25,16 @@ open class Player : LivingEntity() {
     @NBTTag("uuid")
     lateinit var uuid: String
 
-    @NBTTag("password")
-    lateinit var password: String
-
     @NBTTag("current_xteas")
-    lateinit var currentXteas: List<Int>
+    lateinit var currentXteas: IntArray
 
     @NBTTag("privilege")
     var privilege: Int = 0
 
-    val world: RSWorld = RSBox.server.world as RSWorld
+    /**
+     * The cached world instance stored on the player object
+     */
+    val world: RSWorld = server.world
 
     var lastIndex: Int = -1
 
@@ -68,10 +65,9 @@ open class Player : LivingEntity() {
         val tiles = IntArray(gpiTileHashMultipliers.size)
         System.arraycopy(gpiTileHashMultipliers, 0, tiles, 0, tiles.size)
 
-        tile = Tile(3221,3218,0)
-
         sendPacket(PacketOutRebuildLogin(index, tile, tiles, world.xteaKeyService!!))
-        server.logger.info { "Login request accepted for [username=${username}]." }
+
+        Server.logger.info { "Login request accepted for [uuid=${uuid}]. Login request removed from the queue with [status=success]." }
 
         initiated = true
     }

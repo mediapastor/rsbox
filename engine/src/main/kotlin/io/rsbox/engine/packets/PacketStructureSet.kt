@@ -1,7 +1,7 @@
 package io.rsbox.engine.packets
 
-import io.rsbox.api.net.packet.Packet
-import io.rsbox.api.net.packet.PacketStructure
+import io.rsbox.engine.net.packet.Packet
+import io.rsbox.engine.net.packet.PacketStructure
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import mu.KotlinLogging
 import org.reflections.Reflections

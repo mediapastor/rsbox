@@ -1,7 +1,7 @@
 package io.rsbox.engine.packets
 
-import io.rsbox.api.net.packet.Packet
-import io.rsbox.api.net.packet.PacketEncoder
+import io.rsbox.engine.net.packet.Packet
+import io.rsbox.engine.net.packet.PacketEncoder
 import io.rsbox.engine.packets.encoder.PacketOutRebuildLoginEncoder
 import io.rsbox.engine.packets.impl.PacketOutRebuildLogin
 import mu.KotlinLogging

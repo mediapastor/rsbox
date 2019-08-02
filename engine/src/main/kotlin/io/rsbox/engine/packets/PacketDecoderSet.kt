@@ -1,8 +1,8 @@
 package io.rsbox.engine.packets
 
-import io.rsbox.api.net.packet.Packet
-import io.rsbox.api.net.packet.PacketDecoder
-import io.rsbox.api.net.packet.PacketHandler
+import io.rsbox.engine.net.packet.Packet
+import io.rsbox.engine.net.packet.PacketDecoder
+import io.rsbox.engine.net.packet.PacketHandler
 import java.lang.RuntimeException
 
 /**

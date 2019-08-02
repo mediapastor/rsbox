@@ -1,7 +1,7 @@
 package io.rsbox.engine.service.impl
 
 import com.google.gson.Gson
-import io.rsbox.api.Server
+import io.rsbox.engine.Server
 import io.rsbox.engine.model.world.RSWorld
 import io.rsbox.engine.service.Service
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
@@ -38,7 +38,7 @@ class XteaKeyService : Service() {
             loadDirectory(path)
         }
 
-        loadKeys(server.world as RSWorld)
+        loadKeys(server.world)
     }
 
     override fun onStop(server: Server) {

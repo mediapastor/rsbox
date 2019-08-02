@@ -1,18 +1,18 @@
 package io.rsbox.engine
 
-
 /**
  * @author Kyle Escobar
  */
 
 object Launcher {
 
-    lateinit var server: RSServer
+    lateinit var server: Server
 
     @JvmStatic
     fun main(args: Array<String>) {
-        RSServer.logger.info { "Starting up RSBox." }
-        server = RSServer(
+        Server.logger.info { "Starting up RSBox." }
+
+        server = Server(
             filestorePath = "rsbox/data/cache",
             args = args
         )

@@ -1,17 +1,17 @@
 package io.rsbox.engine.service.impl
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
-import io.rsbox.api.Server
+import io.rsbox.engine.Server
 import io.rsbox.engine.service.Service
 import io.rsbox.engine.system.auth.LoginQueue
-import io.rsbox.api.net.login.LoginRequest
-import io.rsbox.engine.model.entity.RSClient
+import io.rsbox.engine.model.entity.Client
 import io.rsbox.engine.packets.PacketBuilderEncoder
 import io.rsbox.engine.packets.PacketMetadata
+import io.rsbox.engine.system.game.GameHandler
 import io.rsbox.engine.system.game.GameSystem
-import io.rsbox.net.codec.game.GamePacketDecoder
-import io.rsbox.net.codec.game.GamePacketEncoder
-import io.rsbox.net.protocol.GameHandler
+import io.rsbox.engine.net.codec.game.GamePacketDecoder
+import io.rsbox.engine.net.codec.game.GamePacketEncoder
+import io.rsbox.engine.net.codec.login.LoginRequest
 import io.rsbox.util.IsaacRandom
 import java.util.concurrent.Executors
 import java.util.concurrent.LinkedBlockingQueue
@@ -46,7 +46,7 @@ class LoginService : Service() {
         logger.info("Login request received and has been queued. [username=${request.username}].")
     }
 
-    internal fun loginGameClient(client: RSClient, encodeRandom: IsaacRandom, decodeRandom: IsaacRandom) {
+    internal fun loginGameClient(client: Client, encodeRandom: IsaacRandom, decodeRandom: IsaacRandom) {
 
         val gameSystem = GameSystem(client.channel, client.world, client, client.world.serviceProvider.getService(GameService::class.java)!!)
         client.gameSystem = gameSystem

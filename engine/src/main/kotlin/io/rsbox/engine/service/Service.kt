@@ -1,6 +1,6 @@
 package io.rsbox.engine.service
 
-import io.rsbox.api.Server
+import io.rsbox.engine.Server
 import mu.KotlinLogging
 
 /**

@@ -1,7 +1,7 @@
 package io.rsbox.engine.packets
 
-import io.rsbox.api.net.packet.IPacketMetadata
-import io.rsbox.api.net.packet.PacketType
+import io.rsbox.engine.net.packet.IPacketMetadata
+import io.rsbox.engine.net.packet.PacketType
 import mu.KotlinLogging
 
 /**

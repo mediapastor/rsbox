@@ -1,6 +1,6 @@
 package io.rsbox.engine.service
 
-import io.rsbox.engine.RSServer
+import io.rsbox.engine.Server
 import mu.KotlinLogging
 import org.reflections.Reflections
 
@@ -8,7 +8,7 @@ import org.reflections.Reflections
  * @author Kyle Escobar
  */
 
-class ServiceProvider(private val server: RSServer) {
+class ServiceProvider(private val server: Server) {
     private val services = mutableListOf<Service>()
 
     @Suppress("UNCHECKED_CAST")

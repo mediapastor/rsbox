@@ -1,6 +1,5 @@
 package io.rsbox.engine.model.world
 
-import io.rsbox.api.World
 import io.rsbox.engine.GameContext
 import io.rsbox.engine.model.entity.LivingEntityList
 import io.rsbox.engine.model.entity.Npc
@@ -13,7 +12,7 @@ import net.runelite.cache.fs.Store
  * @author Kyle Escobar
  */
 
-class RSWorld(val gameContext: GameContext) : World {
+class RSWorld(val gameContext: GameContext) {
 
     /**
      * Runelite cache store for cache

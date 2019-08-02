@@ -2,8 +2,8 @@ package io.rsbox.engine.packets
 
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToMessageEncoder
-import io.rsbox.api.net.packet.GamePacketBuilder
-import io.rsbox.api.net.packet.Packet
+import io.rsbox.engine.net.packet.GamePacketBuilder
+import io.rsbox.engine.net.packet.Packet
 import mu.KotlinLogging
 
 /**

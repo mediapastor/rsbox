@@ -1,6 +1,5 @@
 rootProject.name = 'rsbox'
 include ':api'
 include ':engine'
-include ':net'
 include ':util'
 
