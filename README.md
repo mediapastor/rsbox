@@ -1,9 +1,9 @@
 [![Build Status](https://img.shields.io/travis/rsbox/rsbox)](https://travis-ci.org/rsbox/rsbox)
-![GitHub Releases](https://img.shields.io/github/downloads/rsbox/rsbox/latest/total)
-![RSBox License](https://img.shields.io/github/license/rsbox/rsbox)
-![RSBox Issues](https://img.shields.io/github/issues/rsbox/rsbox)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rsbox/rsbox)
-![GitHub contributors](https://img.shields.io/github/contributors/rsbox/rsbox)
+[![GitHub Releases](https://img.shields.io/github/downloads/rsbox/rsbox/latest/total)](https://github.com/rsbox/rsbox/releases)
+[![RSBox License](https://img.shields.io/github/license/rsbox/rsbox)](https://github.com/rsbox/rsbox/blob/master/LICENSE)
+[![RSBox Issues](https://img.shields.io/github/issues/rsbox/rsbox)](https://github.com/rsbox/rsbox/issues)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rsbox/rsbox)](https://github.com/rsbox/rsbox/commits/master)
+[![GitHub contributors](https://img.shields.io/github/contributors/rsbox/rsbox)](https://github.com/rsbox/rsbox/graphs/contributors)
 [![Join Discord](https://img.shields.io/discord/595582070596698116?color=738ADB&label=Discord)](https://discord.gg/XYYuKn2)
 
 
@@ -56,7 +56,7 @@ Here's What RSBox Offers:
 * Drag and drop plugin installation through compiled JAR files.
 * No development knowledge needed for server setup. If you just want to run your own RSPS server, we offer download and run solutions to get your server running quickly.
 
-Of course, this is an ongoing long-term project run primaryly by our community on discord. If you are at all interested it playing with RSBox, please join our discord by clicking the discord badge at the top.
+Of course, this is an ongoing long-term project run primarily by our community on discord. If you are at all interested it playing with RSBox, please join our discord by clicking the discord badge at the top.
 
 A list of core contributions can be found in the acknowledgements section at the bottom.
 

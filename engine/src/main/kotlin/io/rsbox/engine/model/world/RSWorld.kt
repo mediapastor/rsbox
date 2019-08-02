@@ -1,10 +1,12 @@
-package io.rsbox.engine.model
+package io.rsbox.engine.model.world
 
 import io.rsbox.api.World
 import io.rsbox.engine.GameContext
 import io.rsbox.engine.model.entity.LivingEntityList
 import io.rsbox.engine.model.entity.Npc
 import io.rsbox.engine.model.entity.Player
+import io.rsbox.engine.service.ServiceProvider
+import io.rsbox.engine.service.impl.XteaKeyService
 import net.runelite.cache.fs.Store
 
 /**
@@ -33,6 +35,12 @@ class RSWorld(val gameContext: GameContext) : World {
      */
     val npcs = LivingEntityList(arrayOfNulls<Npc>(Short.MAX_VALUE.toInt()))
 
+    /**
+     * Used frequently, declared here for performance reasons.
+     */
+    var xteaKeyService: XteaKeyService? = null
+
+    lateinit var serviceProvider: ServiceProvider
 
 
     internal fun init() {

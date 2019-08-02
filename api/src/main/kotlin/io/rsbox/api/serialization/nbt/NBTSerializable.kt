@@ -9,7 +9,7 @@ import kotlin.reflect.full.memberProperties
  */
 
 @Suppress("UNCHECKED_CAST")
-open class NBTSerializable {
+interface NBTSerializable {
     fun toNBT(): NBT {
         val clazz = this::class
         val data = nbt()

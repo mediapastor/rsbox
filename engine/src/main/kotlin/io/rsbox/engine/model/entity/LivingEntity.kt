@@ -6,6 +6,6 @@ import io.rsbox.api.serialization.nbt.NBTSerializable
  * @author Kyle Escobar
  */
 
-open class LivingEntity : NBTSerializable() {
+open class LivingEntity : Entity(), NBTSerializable {
     var index: Int = -1
 }

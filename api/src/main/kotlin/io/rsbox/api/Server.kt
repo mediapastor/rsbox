@@ -2,6 +2,7 @@ package io.rsbox.api
 
 import com.uchuhimo.konf.Config
 import io.rsbox.api.net.login.LoginRequest
+import mu.KLogger
 
 /**
  * Represents the base level Server.
@@ -26,5 +27,15 @@ interface Server {
      */
     fun queueLoginRequest(request: LoginRequest)
 
+    /**
+     * The object [World] which represents all interactions with the
+     * game environment. Instance cached on the Server object.
+     */
     var world: World
+
+    /**
+     * The instance of the logger from the server engine instance.
+     * This can be used to log messages to the console.
+     */
+    var logger: KLogger
 }

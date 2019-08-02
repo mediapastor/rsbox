@@ -1,8 +1,12 @@
 package io.rsbox.engine.model.entity
 
 import io.rsbox.api.RSBox
+import io.rsbox.api.Server
+import io.rsbox.api.net.packet.Packet
 import io.rsbox.api.serialization.nbt.NBTTag
-import io.rsbox.engine.model.RSWorld
+import io.rsbox.engine.model.world.RSWorld
+import io.rsbox.engine.model.world.Tile
+import io.rsbox.engine.packets.impl.PacketOutRebuildLogin
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
 /**
@@ -12,6 +16,8 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList
 open class Player : LivingEntity() {
 
     var initiated = false
+
+    val server: Server = RSBox.server
 
     @NBTTag("username")
     lateinit var username: String
@@ -56,6 +62,25 @@ open class Player : LivingEntity() {
             if(i == index) continue
 
             gpiExternalIndexes[gpiExternalCount++] = i
+            gpiTileHashMultipliers[i] = if(i < world.players.capacity) world.players[i]?.tile?.asClientEncryptedHash ?: 0 else 0
         }
+
+        val tiles = IntArray(gpiTileHashMultipliers.size)
+        System.arraycopy(gpiTileHashMultipliers, 0, tiles, 0, tiles.size)
+
+        tile = Tile(3221,3218,0)
+
+        sendPacket(PacketOutRebuildLogin(index, tile, tiles, world.xteaKeyService!!))
+        server.logger.info { "Login request accepted for [username=${username}]." }
+
+        initiated = true
     }
+
+
+    /**
+     * Network related Methods
+     */
+
+    open fun handleIngressPackets() {}
+    open fun sendPacket(vararg packets: Packet) {}
 }

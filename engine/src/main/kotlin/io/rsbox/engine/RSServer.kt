@@ -12,7 +12,7 @@ import io.rsbox.api.Server
 import io.rsbox.api.World
 import io.rsbox.api.net.login.LoginRequest
 import io.rsbox.engine.config.ServerPropertiesSpec
-import io.rsbox.engine.model.RSWorld
+import io.rsbox.engine.model.world.RSWorld
 import io.rsbox.engine.service.ServiceProvider
 import io.rsbox.engine.service.impl.GameService
 import io.rsbox.engine.service.impl.LoginService
@@ -53,6 +53,8 @@ class RSServer(val filestorePath: String, args: Array<String>) : Server {
 
     override lateinit var world: World
 
+    override var logger = loggerInst
+
     fun init() {
 
         RSBox.server = this
@@ -87,12 +89,18 @@ class RSServer(val filestorePath: String, args: Array<String>) : Server {
 
         val filestore = Store(Paths.get(filestorePath).toFile())
         filestore.load()
+
+        (world as RSWorld).cacheStore = filestore
+        (world as RSWorld).serviceProvider = serviceProvider
+
         logger.info { "Loaded cache from path $filestorePath in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}ms."}
 
         serviceProvider.loadEngineServices()
 
         serviceProvider.getService(GameService::class.java)!!.let { gameService ->
             gameService.packetStructures.load()
+            gameService.packetEncoders.init()
+            gameService.packetDecoders.init(gameService.packetStructures)
         }
 
 
@@ -150,5 +158,6 @@ class RSServer(val filestorePath: String, args: Array<String>) : Server {
 
     companion object {
         val logger = KotlinLogging.logger {}
+        val loggerInst = KotlinLogging.logger {}
     }
 }
