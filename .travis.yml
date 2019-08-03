@@ -27,6 +27,7 @@ jobs:
       script: skip
 
     - stage: release
+      script: ./gradlew api:jar
       deploy:
         provider: releases
         api_key:
@@ -34,3 +35,4 @@ jobs:
         file: api/build/libs/rsbox-api.jar
         on:
           repo: rsbox/rsbox
+          tags: true
