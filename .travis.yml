@@ -23,7 +23,7 @@ jobs:
       script: ./gradlew build
 
     - stage: release
-      script: ./gradlew build && ./gradlew api:jar
+      script: ./gradlew build && ./gradlew api:jar && ./gradlew engine:shadowJar
       before_deploy:
         - git config --local user.name 'rsbox-automation'
         - git config --local user.email 'git@rsbox.io'
@@ -33,7 +33,9 @@ jobs:
         provider: releases
         api_key:
           secure: lZGoRpHEnyw76Nrdxvy8PH1295yZNyyboFXNTa/QoPWjocK+EBQFjMrtmPnlQ6eJe9kjYWcdUJ8IghXXhK/wRC/qkmdLCX+Z2Ac/fTS7PwOz8q/FOPgUvD3B0+PK/AQRMIDciCyyRKqgr/NECMOfJAuLUjCp83RHN9A6k/4cBPa8aj0OKHwF2A78QGkSoeyWHJMlPfPxb2C7CH6P8PQAX66/Nj0e7BdFHo+iKYHNM9egC6dmRrKGQBoPngIThk0O+jdofeEjvJ8d2/7kwJ6g2e4jksVx2SHKzEE0rVTyWwOkGO59ddF3uUBaqCvZKVMZwAcTBSwu6x3j5cRJnzJCA7IVZNJlA8FmzeSITP+QExx0nweJfOdSe9bnf369BhPFBV382t0Ql73tjQWaXNf2ZUq1idc3jjOxi/Ee2sred0PoCR0ICxLs3vEb1YRY5QxtMeBFondfbn6lNw6a4iK+jCcHyqq3dMnxEQF8zzjOFD2wLQBXatStQmyQmfIlvINOnQ2rRFJOVv3iSgHF+BKYOzQdzK/L79Cw+p1SqmAfWuzRclz984XNj3rlO7FxkHEUlJH1cja+YGDah6FNlQUcB1S+LvNjJGrIeKlrKBxFhZ99kGdPPXw79Ls0KjP0nt+mf/gHjuC4nb2/bHf/xNf3Xn5TgsVLu+rtn1lDcmUb06o=
-        file: api/build/libs/rsbox-api.jar
+        file:
+          - "api/build/libs/rsbox-api.jar"
+          - "engine/build/libs/rsbox-server.jar"
         skip_cleanup: true
         draft: true
         on:

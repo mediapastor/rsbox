@@ -29,7 +29,7 @@ object Xtea {
         for (i in 0 until numBlocks) {
             var y = buffer.int
             var z = buffer.int
-            var sum = GOLDEN_RATIO * ROUNDS
+            @Suppress("INTEGER_OVERFLOW") var sum = GOLDEN_RATIO * ROUNDS
             val delta = GOLDEN_RATIO
             for (j in ROUNDS downTo 1) {
                 z -= (y.ushr(5) xor (y shl 4)) + y xor sum + key[sum.ushr(11) and 0x56c00003]

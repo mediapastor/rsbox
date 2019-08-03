@@ -50,11 +50,14 @@ class RsaKey {
             println("Private RSA key was not found at: $privateKeyPath")
             println("Would you like to generate one? (y/n)")
 
-            val create = if(scanner.hasNext()) scanner.nextLine() in arrayOf("yes", "y", "true") else true
+            val create = if(scanner.hasNext()) scanner.nextLine() in arrayOf("yes", "y", "true") else false
             if(create) {
                 logger.info { "Generating RSA key pair..." }
                 createPair(bitCount = (server.config.getOrNull<Int>("server.rsa.bits") ?: 2048))
-                scanner.next()
+
+
+                println("Please press [ENTER] when you are ready to start the server...")
+                scanner.nextLine()
                 init()
             } else {
                 throw RuntimeException("Private RSA key was not found! Follow the instructions in the documentation / WiKi.")
@@ -135,8 +138,6 @@ class RsaKey {
         } catch (e : Exception) {
             logger.error(e) { "Failed to write public key to ${publicKeyPath.toAbsolutePath()}" }
         }
-
-        System.exit(1)
     }
 
     companion object {

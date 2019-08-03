@@ -19,6 +19,7 @@ import io.rsbox.engine.net.packet.ClientChannelInitializer
 import mu.KotlinLogging
 import net.runelite.cache.fs.Store
 import java.io.File
+import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 
@@ -60,6 +61,11 @@ class Server(val filestorePath: String, args: Array<String>) : io.rsbox.api.Serv
 
         logger.info { "Loading configurations" }
         this.loadConfigs()
+
+        logger.info { "Scanning directories..." }
+        if(File("rsbox/data/cache").list().isEmpty()) {
+            Setup.downloader()
+        }
 
         logger.info { "Starting server" }
         this.startServer()

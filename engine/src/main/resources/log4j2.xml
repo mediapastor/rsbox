@@ -4,7 +4,7 @@
         <Console name="WINDOWS_COMPAT" target="SYSTEM_OUT">
             <PatternLayout pattern="[%d{HH:mm:ss}] [%t/%level]: %msg%n" />
         </Console>
-        <File name="File" fileName="error.log" append="false">
+        <File name="File" fileName="rsbox/logs/error.log" append="false">
             <PatternLayout pattern="[%d{HH:mm:ss}] [%t/%level]: %msg%n" />
         </File>
     </Appenders>
