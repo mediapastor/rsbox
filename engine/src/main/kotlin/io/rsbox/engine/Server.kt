@@ -7,6 +7,7 @@ import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
+import io.rsbox.api.RSBox
 import io.rsbox.engine.config.ServerPropertiesSpec
 import io.rsbox.engine.model.world.RSWorld
 import io.rsbox.engine.service.ServiceProvider
@@ -25,7 +26,7 @@ import java.util.concurrent.TimeUnit
  * @author Kyle Escobar
  */
 
-class Server(val filestorePath: String, args: Array<String>) {
+class Server(val filestorePath: String, args: Array<String>) : io.rsbox.api.Server {
 
     private val dirs = arrayOf(
         "rsbox/configs",
@@ -52,6 +53,9 @@ class Server(val filestorePath: String, args: Array<String>) {
 
     fun init() {
         logger.info { "Initializing server..." }
+
+        RSBox.server = this
+
         this.setupDirs()
 
         logger.info { "Loading configurations" }
