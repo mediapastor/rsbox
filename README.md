@@ -1,5 +1,6 @@
 [![Build Status](https://img.shields.io/travis/rsbox/rsbox)](https://travis-ci.org/rsbox/rsbox)
-[![GitHub Releases](https://img.shields.io/github/downloads/rsbox/rsbox/latest/total)](https://github.com/rsbox/rsbox/releases)
+![GitHub tag (latest by date)](https://img.shields.io/github/tag-date/rsbox/rsbox?label=latest)
+[![GitHub All Releases](https://img.shields.io/github/downloads/rsbox/rsbox/total)](https://github.com/rsbox/rsbox/releases)
 [![RSBox License](https://img.shields.io/github/license/rsbox/rsbox)](https://github.com/rsbox/rsbox/blob/master/LICENSE)
 [![RSBox Issues](https://img.shields.io/github/issues/rsbox/rsbox)](https://github.com/rsbox/rsbox/issues)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rsbox/rsbox)](https://github.com/rsbox/rsbox/commits/master)
