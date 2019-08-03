@@ -2,7 +2,7 @@ package io.rsbox.engine.service.impl
 
 import com.google.gson.Gson
 import io.rsbox.engine.Server
-import io.rsbox.engine.model.world.RSWorld
+import io.rsbox.engine.model.world.World
 import io.rsbox.engine.service.Service
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import mu.KotlinLogging
@@ -69,7 +69,7 @@ class XteaKeyService : Service() {
         }
     }
 
-    private fun loadKeys(world: RSWorld) {
+    private fun loadKeys(world: World) {
         /*
          * Get the total amount of valid regions and which keys we are missing.
          */
@@ -104,7 +104,7 @@ class XteaKeyService : Service() {
         }
 
         /*
-         * Set the XTEA service for the [RSWorld].
+         * Set the XTEA service for the [World].
          */
         world.xteaKeyService = this
 

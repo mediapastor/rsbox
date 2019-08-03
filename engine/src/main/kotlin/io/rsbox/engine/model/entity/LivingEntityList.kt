@@ -49,4 +49,12 @@ class LivingEntityList<T: LivingEntity>(private val entities: Array<T?>) {
         }
         return null
     }
+
+    fun forEach(action: (T) -> Unit) {
+        for(element in entities) {
+            if(element != null) {
+                action(element)
+            }
+        }
+    }
 }

@@ -9,10 +9,10 @@ import io.rsbox.engine.serialization.nbt.nbt
  */
 
 class Tile : NBTCustomType {
-
-    var x: Int = 0
-    var z: Int = 0
-    var height: Int = 0
+    private var coordinate: Int = 0
+    var x: Int = coordinate and 0x7FFF
+    var z: Int = (coordinate shr 15) and 0x7FFF
+    var height: Int = coordinate ushr 30
 
     val topLeftRegionX: Int get() = (x shr 3) - 6
     val topLeftRegionZ: Int get() = (z shr 3) - 6
@@ -22,12 +22,11 @@ class Tile : NBTCustomType {
     /**
      * Constructors
      */
-
-    constructor(x: Int, z: Int, height: Int = 0) {
-        this.x = x
-        this.z = z
-        this.height = height
+    private constructor(coordinate: Int) {
+        this.coordinate = coordinate
     }
+
+    constructor(x: Int, z: Int, height: Int = 0) : this((x and 0x7FFF) or ((z and 0x7FFF) shl 15) or (height shl 30))
 
     constructor(other: Tile) : this(other.x, other.z, other.height)
 
@@ -57,5 +56,14 @@ class Tile : NBTCustomType {
         x = data.int.get("x") ?: 0
         z = data.int.get("z") ?: 0
         height = data.int.get("height") ?: 0
+    }
+
+    override fun hashCode(): Int = coordinate
+
+    override fun equals(other: Any?): Boolean {
+        if(other is Tile) {
+            return other.coordinate == coordinate
+        }
+        return false
     }
 }

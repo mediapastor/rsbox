@@ -12,7 +12,7 @@ import net.runelite.cache.fs.Store
  * @author Kyle Escobar
  */
 
-class RSWorld(val gameContext: GameContext) {
+class World(val gameContext: GameContext) {
 
     /**
      * Runelite cache store for cache

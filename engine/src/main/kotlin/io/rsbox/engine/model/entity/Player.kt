@@ -2,10 +2,10 @@ package io.rsbox.engine.model.entity
 
 import io.rsbox.engine.Launcher
 import io.rsbox.engine.Server
+import io.rsbox.engine.model.world.Coordinate
 import io.rsbox.engine.net.packet.Packet
 import io.rsbox.engine.serialization.nbt.NBTTag
-import io.rsbox.engine.model.world.RSWorld
-import io.rsbox.engine.model.world.Tile
+import io.rsbox.engine.model.world.World
 import io.rsbox.engine.packets.impl.PacketOutRebuildLogin
 import it.unimi.dsi.fastutil.objects.ObjectArrayList
 
@@ -34,7 +34,9 @@ open class Player : LivingEntity() {
     /**
      * The cached world instance stored on the player object
      */
-    val world: RSWorld = server.world
+    val world: World = server.world
+
+    var lastRegionBase: Coordinate? = null
 
     var lastIndex: Int = -1
 
@@ -79,4 +81,23 @@ open class Player : LivingEntity() {
 
     open fun handleIngressPackets() {}
     open fun sendPacket(vararg packets: Packet) {}
+
+    companion object {
+        /**
+         * How many tiles a player can 'see' at a time, normally.
+         */
+        const val NORMAL_VIEW_DISTANCE = 15
+
+        /**
+         * How many tiles a player can 'see' at a time when in a 'large' viewport.
+         */
+        const val LARGE_VIEW_DISTANCE = 127
+
+        /**
+         * How many tiles in each direction a player can see at a given time.
+         * This should be as far as players can see entities such as ground items
+         * and objects.
+         */
+        const val TILE_VIEW_DISTANCE = 128
+    }
 }

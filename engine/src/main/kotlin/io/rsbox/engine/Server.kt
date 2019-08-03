@@ -9,7 +9,7 @@ import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.rsbox.api.RSBox
 import io.rsbox.engine.config.ServerPropertiesSpec
-import io.rsbox.engine.model.world.RSWorld
+import io.rsbox.engine.model.world.World
 import io.rsbox.engine.service.ServiceProvider
 import io.rsbox.engine.service.impl.GameService
 import io.rsbox.engine.service.impl.LoginService
@@ -19,7 +19,7 @@ import io.rsbox.engine.net.packet.ClientChannelInitializer
 import mu.KotlinLogging
 import net.runelite.cache.fs.Store
 import java.io.File
-import java.nio.file.Files
+import java.net.InetSocketAddress
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
 
@@ -50,7 +50,7 @@ class Server(val filestorePath: String, args: Array<String>) : io.rsbox.api.Serv
 
     val serviceProvider = ServiceProvider(this)
 
-    lateinit var world: RSWorld
+    lateinit var world: World
 
     fun init() {
         logger.info { "Initializing server..." }
@@ -83,7 +83,7 @@ class Server(val filestorePath: String, args: Array<String>) : io.rsbox.api.Serv
             config.get("server.playerLimit")
         )
 
-        world = RSWorld(gameContext)
+        world = World(gameContext)
 
         stopwatch.reset().start()
 
@@ -123,7 +123,7 @@ class Server(val filestorePath: String, args: Array<String>) : io.rsbox.api.Serv
         val address = config.get<String>("server.host")
         val port = config.get<Int>("server.port")
 
-        bootstrap.bind(address, port).sync().awaitUninterruptibly()
+        bootstrap.bind(InetSocketAddress(port)).sync().awaitUninterruptibly()
         logger.info { "Server started. Listening for connections on ${address}:${port}..." }
 
         System.gc()

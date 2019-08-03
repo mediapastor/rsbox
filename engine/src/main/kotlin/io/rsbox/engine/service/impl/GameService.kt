@@ -3,12 +3,14 @@ package io.rsbox.engine.service.impl
 import com.google.common.util.concurrent.ThreadFactoryBuilder
 import io.rsbox.engine.Launcher
 import io.rsbox.engine.Server
-import io.rsbox.engine.model.world.RSWorld
+import io.rsbox.engine.model.world.World
 import io.rsbox.engine.packets.PacketDecoderSet
 import io.rsbox.engine.packets.PacketEncoderSet
 import io.rsbox.engine.packets.PacketStructureSet
 import io.rsbox.engine.service.Service
 import io.rsbox.engine.task.GameTask
+import io.rsbox.engine.task.impl.multi.MultiThreadSyncTask
+import io.rsbox.engine.task.impl.single.SingleThreadSyncTask
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -26,7 +28,7 @@ class GameService : Service() {
      */
     var paused: Boolean = false
 
-    lateinit var world: RSWorld
+    lateinit var world: World
 
     var maxPacketsPerCycle = 30
 
@@ -83,7 +85,9 @@ class GameService : Service() {
              * Add Sequential Tasks
              */
             tasks.addAll(arrayOf(
+                SingleThreadSyncTask()
             ))
+            logger.info { "Game running in single-core mode. ${tasks.size} will be handled per tick." }
         } else {
             val executor = Executors.newFixedThreadPool(processors,
                     ThreadFactoryBuilder()
@@ -93,8 +97,9 @@ class GameService : Service() {
                 )
 
             tasks.addAll(arrayOf(
-
+                MultiThreadSyncTask(executor)
             ))
+            logger.info { "Game running in multi-core mode. ${tasks.size} will be handled per tick on ${processors} threads."}
         }
     }
 

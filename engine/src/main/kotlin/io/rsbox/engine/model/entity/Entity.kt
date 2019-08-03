@@ -11,6 +11,6 @@ import io.rsbox.engine.serialization.nbt.NBTTag
 open class Entity : NBTSerializable {
 
     @NBTTag("tile")
-    lateinit var tile: Tile
+    var tile: Tile = Tile(0,0,0)
 
 }
