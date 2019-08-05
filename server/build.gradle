@@ -1,0 +1,17 @@
+plugins {}
+
+group 'rsbox'
+version '1.0'
+
+apply plugin: 'application'
+
+description = 'RSBox Server'
+mainClassName = 'io.rsbox.server.Launcher'
+
+run {
+    workingDir = rootProject.projectDir
+}
+
+configure(run) {
+    group = 'server'
+}
