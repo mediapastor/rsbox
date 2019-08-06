@@ -8,6 +8,10 @@ apply plugin: 'application'
 description = 'RSBox Server'
 mainClassName = 'io.rsbox.server.Launcher'
 
+dependencies {
+    compile project(':server:net')
+}
+
 run {
     workingDir = rootProject.projectDir
 }

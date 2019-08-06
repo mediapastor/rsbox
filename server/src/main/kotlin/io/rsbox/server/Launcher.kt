@@ -5,8 +5,13 @@ package io.rsbox.server
  */
 
 object Launcher {
+
+    lateinit var server: Server
+
+    @Suppress("UnusedMainParameter")
     @JvmStatic
     fun main(args: Array<String>) {
-        println("wooo")
+        server = Server()
+        server.init()
     }
 }
