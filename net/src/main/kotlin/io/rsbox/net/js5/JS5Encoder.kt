@@ -11,7 +11,7 @@ import io.netty.handler.codec.MessageToByteEncoder
 class JS5Encoder : MessageToByteEncoder<JS5Response>() {
     override fun encode(ctx: ChannelHandlerContext, msg: JS5Response, out: ByteBuf) {
         out.writeByte(msg.index)
-        out.writeByte(msg.archive)
+        out.writeShort(msg.archive)
 
         msg.data.forEach { data ->
             if(out.writerIndex() % 512 == 0) {

@@ -3,6 +3,7 @@ package io.rsbox.net
 import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelInboundHandlerAdapter
+import io.netty.handler.timeout.ReadTimeoutException
 import io.netty.util.AttributeKey
 import io.rsbox.net.handshake.HandshakeMessage
 import io.rsbox.net.protocol.GameProtocol
@@ -25,15 +26,30 @@ class GameHandler : ChannelInboundHandlerAdapter() {
     }
 
     override fun channelRead(ctx: ChannelHandlerContext, msg: Any) {
-        val attribute = ctx.channel().attr(PROTOCOL_KEY)
-        val protocol = attribute.get()
-        if(protocol != null) {
-            protocol.receiveMessage(ctx,msg)
-        } else if(msg is HandshakeMessage) {
-            when(msg.id) {
-                14 -> attribute.set(JS5Protocol(ctx.channel()))
+        try {
+            val attribute = ctx.channel().attr(PROTOCOL_KEY)
+            val protocol = attribute.get()
+            if(protocol != null) {
+                protocol.receiveMessage(ctx,msg)
+            } else if(msg is HandshakeMessage) {
+                when(msg.id) {
+                    15 -> attribute.set(JS5Protocol(ctx.channel())) // JS5 Cache download opcode
+                }
+            }
+        } catch(e: Exception) {
+            logger.error("Error reading $msg from channel ${ctx.channel()}.", e)
+        }
+    }
+
+    override fun exceptionCaught(ctx: ChannelHandlerContext, cause: Throwable) {
+        if(cause.stackTrace.isEmpty() || cause.stackTrace[0].methodName != "read0") {
+            if(cause is ReadTimeoutException) {
+                logger.info { "Channel ${ctx.channel()} disconnected due to timeout." }
+            } else {
+                logger.error("Channel threw an exception ${ctx.channel()}", cause)
             }
         }
+        ctx.channel().close()
     }
 
     companion object : KLogging() {

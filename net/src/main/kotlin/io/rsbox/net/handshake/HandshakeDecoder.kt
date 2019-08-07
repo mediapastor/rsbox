@@ -4,6 +4,8 @@ import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
 import io.rsbox.net.GameHandler
+import io.rsbox.net.js5.JS5Decoder
+import io.rsbox.net.js5.JS5Encoder
 
 /**
  * @author Kyle Escobar
@@ -17,10 +19,10 @@ class HandshakeDecoder : ByteToMessageDecoder(){
 
         val opcode = buf.readByte().toInt()
         when(opcode) {
-            14 -> {
+            15 -> {
                 val p = ctx.pipeline()
-                p.addFirst("cache_encoder", null)
-                p.addAfter("handshake_decoder", "cache_decoder", null)
+                p.addFirst("js5_encoder", JS5Encoder())
+                p.addAfter("handshake_decoder", "js5_decoder", JS5Decoder())
             }
 
             else -> {

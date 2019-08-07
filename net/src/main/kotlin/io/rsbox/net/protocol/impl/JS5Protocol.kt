@@ -7,6 +7,7 @@ import io.rsbox.net.Network
 import io.rsbox.net.js5.JS5Request
 import io.rsbox.net.js5.JS5Response
 import io.rsbox.net.protocol.GameProtocol
+import mu.KLogging
 import net.runelite.cache.fs.Container
 import net.runelite.cache.fs.jagex.CompressionType
 import net.runelite.cache.fs.jagex.DiskStorage
@@ -20,6 +21,7 @@ class JS5Protocol(channel: Channel) : GameProtocol(channel) {
 
     override fun receiveMessage(ctx: ChannelHandlerContext, msg: Any) {
         if(msg is JS5Request) {
+            println("js5 recieved.")
             if(msg.index == 255) {
                 encodeIndexData(ctx,msg)
             } else {
@@ -55,6 +57,7 @@ class JS5Protocol(channel: Channel) : GameProtocol(channel) {
 
         val response = JS5Response(req.index, req.archive, data)
         ctx.writeAndFlush(response)
+        println("Responded file index")
     }
 
     private fun encodeFileData(ctx: ChannelHandlerContext, req: JS5Request) {
@@ -72,10 +75,13 @@ class JS5Protocol(channel: Channel) : GameProtocol(channel) {
 
             val response = JS5Response(req.index, req.archive, data)
             ctx.writeAndFlush(response)
+            println("Responded file data")
+        } else {
+            logger.warn("Data missing from the archive.")
         }
     }
 
-    companion object {
+    companion object : KLogging() {
         private var cacheIndex: ByteArray? = null
     }
 }

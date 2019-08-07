@@ -57,16 +57,20 @@ class Server {
        initCache()
 
        /**
-        * Pass the required params to the network module object for storage in memory
-        */
-       Network.revision = settings[SettingsSpec.revision]
-
-       /**
         * Hook shutdown event for proper shutdowns
         */
        interceptShutdown { this.shutdown() }
 
        RSA.init()
+
+
+
+       /**
+        * Pass the required params to the network module object for storage in memory
+        */
+       Network.revision = settings[SettingsSpec.revision]
+       Network.rsaExponent = RSA.exponent
+       Network.rsaModulus = RSA.modulus
 
        start()
    }
