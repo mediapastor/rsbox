@@ -6,8 +6,13 @@ allprojects {
     apply plugin: 'org.jetbrains.kotlin.jvm'
     
     group 'rsbox'
-    version '1.0'
+    version '0.1-ALPHA'
 
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
 
     ext {
         jvmVersion = '1.8'
@@ -30,20 +35,7 @@ allprojects {
         fastUtilVersion = '7.0.7'
     }
     
-    repositories {
-        mavenLocal()
-        jcenter()
-        maven { url "https://repo.maven.apache.org/maven2" }
-        maven { url 'https://jitpack.io' }
-    }
-
-    configurations {
-        ktlint
-    }
-
     dependencies {
-        ktlint "com.github.shyiko:ktlint:0.15.0"
-
         compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
         compile "org.slf4j:slf4j-api:$slf4jVersion"
         compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
@@ -71,7 +63,5 @@ allprojects {
         implementation "com.google.code.gson:gson:$gsonVersion"
         implementation "com.github.runelite.runelite:cache:$runeliteVersion"
         implementation "io.netty:netty-all:$nettyVersion"
-
-        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
     }
 }
