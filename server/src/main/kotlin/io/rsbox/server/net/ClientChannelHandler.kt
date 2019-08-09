@@ -1,12 +1,12 @@
-package io.rsbox.net
+package io.rsbox.server.net
 
 import io.netty.channel.ChannelInitializer
 import io.netty.channel.socket.SocketChannel
 import io.netty.handler.timeout.IdleStateHandler
 import io.netty.handler.traffic.ChannelTrafficShapingHandler
 import io.netty.handler.traffic.GlobalTrafficShapingHandler
-import io.rsbox.net.handshake.HandshakeDecoder
-import io.rsbox.net.handshake.HandshakeEncoder
+import io.rsbox.server.net.handshake.HandshakeDecoder
+import io.rsbox.server.net.handshake.HandshakeEncoder
 import java.util.concurrent.Executors
 
 /**

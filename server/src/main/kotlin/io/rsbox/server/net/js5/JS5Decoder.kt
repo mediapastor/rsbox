@@ -1,11 +1,11 @@
-package io.rsbox.net.js5
+package io.rsbox.server.net.js5
 
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
-import io.rsbox.net.Network
-import io.rsbox.net.ServerResultType
-import io.rsbox.net.StatefulFrameDecoder
+import io.rsbox.server.Launcher
+import io.rsbox.server.net.ServerResultType
+import io.rsbox.server.net.StatefulFrameDecoder
 import mu.KLogging
 
 /**
@@ -23,7 +23,7 @@ class JS5Decoder : StatefulFrameDecoder<JS5DecoderState>(JS5DecoderState.REVISIO
     private fun decodeRevision(ctx: ChannelHandlerContext, buf: ByteBuf) {
         if(buf.readableBytes() >= 4) {
             val revision = buf.readInt()
-            if(revision != Network.revision) {
+            if(revision != Launcher.server.revision) {
                 logger.info { "Client connection for channel ${ctx.channel()} rejected due to an outdated client." }
                 ctx.writeAndFlush(ServerResultType.REVISION_MISMATCH).addListener(ChannelFutureListener.CLOSE)
             } else {

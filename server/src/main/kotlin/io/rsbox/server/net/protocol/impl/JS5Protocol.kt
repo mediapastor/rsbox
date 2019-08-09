@@ -1,12 +1,12 @@
-package io.rsbox.net.protocol.impl
+package io.rsbox.server.net.protocol.impl
 
 import com.google.common.primitives.Ints
 import io.netty.channel.Channel
 import io.netty.channel.ChannelHandlerContext
-import io.rsbox.net.Network
-import io.rsbox.net.js5.JS5Request
-import io.rsbox.net.js5.JS5Response
-import io.rsbox.net.protocol.GameProtocol
+import io.rsbox.server.Launcher
+import io.rsbox.server.net.js5.JS5Request
+import io.rsbox.server.net.js5.JS5Response
+import io.rsbox.server.net.protocol.GameProtocol
 import mu.KLogging
 import net.runelite.cache.fs.Container
 import net.runelite.cache.fs.jagex.CompressionType
@@ -17,11 +17,10 @@ import net.runelite.cache.fs.jagex.DiskStorage
  */
 
 class JS5Protocol(channel: Channel) : GameProtocol(channel) {
-    private val cacheStore = Network.cacheStore
+    private val cacheStore = Launcher.server.cacheStore
 
     override fun receiveMessage(ctx: ChannelHandlerContext, msg: Any) {
         if(msg is JS5Request) {
-            println("js5 recieved.")
             if(msg.index == 255) {
                 encodeIndexData(ctx,msg)
             } else {
@@ -57,7 +56,6 @@ class JS5Protocol(channel: Channel) : GameProtocol(channel) {
 
         val response = JS5Response(req.index, req.archive, data)
         ctx.writeAndFlush(response)
-        println("Responded file index")
     }
 
     private fun encodeFileData(ctx: ChannelHandlerContext, req: JS5Request) {
@@ -75,7 +73,6 @@ class JS5Protocol(channel: Channel) : GameProtocol(channel) {
 
             val response = JS5Response(req.index, req.archive, data)
             ctx.writeAndFlush(response)
-            println("Responded file data")
         } else {
             logger.warn("Data missing from the archive.")
         }

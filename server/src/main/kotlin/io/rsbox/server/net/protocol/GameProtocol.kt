@@ -1,4 +1,4 @@
-package io.rsbox.net.protocol
+package io.rsbox.server.net.protocol
 
 import io.netty.channel.Channel
 import io.netty.channel.ChannelHandlerContext

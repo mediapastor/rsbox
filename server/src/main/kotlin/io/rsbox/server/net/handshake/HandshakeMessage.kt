@@ -1,4 +1,4 @@
-package io.rsbox.net.handshake
+package io.rsbox.server.net.handshake
 
 /**
  * @author Kyle Escobar

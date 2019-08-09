@@ -9,5 +9,4 @@ run {
 }
 
 dependencies {
-    compile project(':net')
 }

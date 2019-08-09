@@ -1,13 +1,14 @@
-package io.rsbox.net
+package io.rsbox.server.net
 
 import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelInboundHandlerAdapter
 import io.netty.handler.timeout.ReadTimeoutException
 import io.netty.util.AttributeKey
-import io.rsbox.net.handshake.HandshakeMessage
-import io.rsbox.net.protocol.GameProtocol
-import io.rsbox.net.protocol.impl.JS5Protocol
+import io.rsbox.server.net.handshake.HandshakeMessage
+import io.rsbox.server.net.protocol.GameProtocol
+import io.rsbox.server.net.protocol.impl.JS5Protocol
+import io.rsbox.server.net.protocol.impl.LoginProtocol
 import mu.KLogging
 
 /**
@@ -34,6 +35,7 @@ class GameHandler : ChannelInboundHandlerAdapter() {
             } else if(msg is HandshakeMessage) {
                 when(msg.id) {
                     15 -> attribute.set(JS5Protocol(ctx.channel())) // JS5 Cache download opcode
+                    14 -> attribute.set(LoginProtocol(ctx.channel())) // Login request opcode
                 }
             }
         } catch(e: Exception) {

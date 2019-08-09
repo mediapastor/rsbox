@@ -1,4 +1,4 @@
-package io.rsbox.net.js5
+package io.rsbox.server.net.js5
 
 /**
  * @author Kyle Escobar

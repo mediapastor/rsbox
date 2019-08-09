@@ -1,9 +1,9 @@
-package io.rsbox.net.handshake
+package io.rsbox.server.net.handshake
 
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToByteEncoder
-import io.rsbox.net.ServerResultType
+import io.rsbox.server.net.ServerResultType
 
 /**
  * @author Kyle Escobar

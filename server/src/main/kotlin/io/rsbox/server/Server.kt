@@ -7,10 +7,10 @@ import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
-import io.rsbox.net.ClientChannelHandler
-import io.rsbox.net.Network
+import io.rsbox.server.net.ClientChannelHandler
 import io.rsbox.server.config.SettingsSpec
 import io.rsbox.server.net.rsa.RSA
+import io.rsbox.server.service.ServiceManager
 import mu.KLogging
 import net.runelite.cache.fs.Store
 import java.io.File
@@ -28,6 +28,8 @@ class Server {
      */
     lateinit var cacheStore: Store
 
+    val revision: Int = settings[SettingsSpec.revision]
+
     private val acceptGroup = NioEventLoopGroup(2)
     private val ioGroup = NioEventLoopGroup(1)
     val bootstrap = ServerBootstrap()
@@ -40,6 +42,7 @@ class Server {
         "rsbox/data/xteas",
         "rsbox/data/def",
         "rsbox/data/rsa",
+        "rsbox/data/saves",
         "rsbox/plugins"
     )
 
@@ -63,14 +66,10 @@ class Server {
 
        RSA.init()
 
-
-
        /**
-        * Pass the required params to the network module object for storage in memory
+        * Start the services via [ServiceManager]
         */
-       Network.revision = settings[SettingsSpec.revision]
-       Network.rsaExponent = RSA.exponent
-       Network.rsaModulus = RSA.modulus
+       ServiceManager.init()
 
        start()
    }
@@ -145,8 +144,6 @@ class Server {
         stopwatch.stop()
 
         logger.info("Loaded the server cache files in {}ms.", stopwatch.elapsed(TimeUnit.MILLISECONDS))
-
-        Network.cacheStore = cacheStore
     }
 
     private interface ShutdownHook {

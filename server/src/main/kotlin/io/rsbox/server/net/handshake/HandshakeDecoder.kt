@@ -1,11 +1,12 @@
-package io.rsbox.net.handshake
+package io.rsbox.server.net.handshake
 
 import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.ByteToMessageDecoder
-import io.rsbox.net.GameHandler
-import io.rsbox.net.js5.JS5Decoder
-import io.rsbox.net.js5.JS5Encoder
+import io.rsbox.server.net.js5.JS5Decoder
+import io.rsbox.server.net.js5.JS5Encoder
+import io.rsbox.server.net.login.LoginDecoder
+import io.rsbox.server.net.login.LoginEncoder
 
 /**
  * @author Kyle Escobar
@@ -23,6 +24,17 @@ class HandshakeDecoder : ByteToMessageDecoder(){
                 val p = ctx.pipeline()
                 p.addFirst("js5_encoder", JS5Encoder())
                 p.addAfter("handshake_decoder", "js5_decoder", JS5Decoder())
+            }
+
+            14 -> {
+                val p = ctx.pipeline()
+                val serverSeed = (Math.random() * Long.MAX_VALUE).toLong()
+
+                p.addFirst("login_encoder", LoginEncoder())
+                p.addAfter("handshake_decoder", "login_decoder", LoginDecoder(serverSeed))
+
+                ctx.writeAndFlush(ctx.alloc().buffer(1).writeByte(0))
+                ctx.writeAndFlush(ctx.alloc().buffer(8).writeLong(serverSeed))
             }
 
             else -> {

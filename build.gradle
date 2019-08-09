@@ -41,7 +41,6 @@ allprojects {
         compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
         compile "io.github.microutils:kotlin-logging:$kloggingVersion"
         compile 'com.uchuhimo:konf:0.13.3'
-        compile 'io.github.microutils:kotlin-logging:1.7.2'
         compile 'com.github.uchuhimo:konf:master-SNAPSHOT'
 
         compile "org.jetbrains.kotlin:kotlin-scripting-common:$kotlinVersion"
