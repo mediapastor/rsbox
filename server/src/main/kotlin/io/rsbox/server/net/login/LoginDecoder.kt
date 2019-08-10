@@ -27,7 +27,7 @@ class LoginDecoder(private val serverSeed: Long) : StatefulFrameDecoder<LoginDec
         buf.markReaderIndex()
         when(state) {
             LoginDecoderState.HANDSHAKE -> decodeHandshake(ctx,buf)
-            LoginDecoderState.HEADER -> decodeHeader(ctx,buf, out)
+            LoginDecoderState.HEADER -> decodeHeader(ctx,buf,out)
         }
     }
 
@@ -48,6 +48,10 @@ class LoginDecoder(private val serverSeed: Long) : StatefulFrameDecoder<LoginDec
             val size = buf.readUnsignedShort()
             if(buf.readableBytes() >= size) {
                 val revision = buf.readInt()
+
+                buf.skipBytes(Int.SIZE_BYTES)
+                buf.skipBytes(Byte.SIZE_BYTES)
+
                 if(revision == Launcher.server.revision) {
                     payloadLength = size - (Int.SIZE_BYTES + Int.SIZE_BYTES + Byte.SIZE_BYTES)
                     decodePayload(ctx,buf,out)
@@ -67,8 +71,6 @@ class LoginDecoder(private val serverSeed: Long) : StatefulFrameDecoder<LoginDec
             val rsaExponent = RSA.exponent
             val rsaModulus = RSA.modulus
 
-            println("pub: ${rsaExponent} priv: ${rsaModulus}")
-
             val secureBuf: ByteBuf = run {
                 val secureBufLength = buf.readUnsignedShort()
                 val secureBuf2 = buf.readBytes(secureBufLength)
@@ -80,7 +82,7 @@ class LoginDecoder(private val serverSeed: Long) : StatefulFrameDecoder<LoginDec
             if(!successfulEncryption) {
                 buf.resetReaderIndex()
                 buf.skipBytes(payloadLength)
-                logger.info { "Login request rejected for channel ${ctx.channel()}." }
+                logger.info { "Login request rejected. RSA Encryption key does not match on the client." }
                 ctx.writeServerResult(ServerResultType.BAD_SESSION_ID)
                 return
             }
@@ -122,7 +124,7 @@ class LoginDecoder(private val serverSeed: Long) : StatefulFrameDecoder<LoginDec
             if(clientSeed != serverSeed) {
                 xteaBuf.resetReaderIndex()
                 xteaBuf.skipBytes(payloadLength)
-                logger.info { "Login request rejected for user ${username} due to seed mismatch." }
+                logger.info { "Login request rejected for user $username due to seed mismatch." }
                 ctx.writeServerResult(ServerResultType.BAD_SESSION_ID)
                 return
             }
@@ -166,13 +168,27 @@ class LoginDecoder(private val serverSeed: Long) : StatefulFrameDecoder<LoginDec
                 if(crcs[i] != cacheCrcs[i]) {
                     buf.resetReaderIndex()
                     buf.skipBytes(payloadLength)
-                    logger.info { "Login request for user ${username} rejected due to cache crc mismatch." }
+                    logger.info { "Login request for user $username rejected due to cache crc mismatch." }
                     ctx.writeServerResult(ServerResultType.REVISION_MISMATCH)
                     return
                 }
             }
 
-            logger.info { "Login request recieved for user ${username} on channel ${ctx.channel()}." }
+            val request = LoginRequest(
+                channel = ctx.channel(),
+                username = username,
+                password = password ?: "",
+                revision = Launcher.server.revision,
+                xteaKeys = xteaKeys,
+                resizableClient = clientResizable,
+                clientWidth = clientWidth,
+                clientHeight = clientHeight,
+                authCode = authCode,
+                uuid = "".toUpperCase(),
+                reconnecting = reconnecting
+            )
+
+            out.add(request)
         }
     }
 

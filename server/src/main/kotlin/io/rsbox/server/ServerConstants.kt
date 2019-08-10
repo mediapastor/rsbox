@@ -10,4 +10,5 @@ object ServerConstants {
     const val XTEAS_PATH = "rsbox/data/xteas/xteas.json"
     const val PLUGINS_PATH = "rsbox/plugins/"
     const val RSA_PATH = "rsbox/data/rsa/"
+    const val SAVES_PATH = "rsbox/data/saves/"
 }

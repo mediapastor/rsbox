@@ -114,6 +114,11 @@ class Server {
         } else {
             settings.from.yaml.file(ServerConstants.SETTINGS_CONFIG_PATH)
             logger.info { "Loaded server settings from ${ServerConstants.SETTINGS_CONFIG_PATH}." }
+
+            /**
+             * Save the current config in case new defaults are not saved.
+             */
+            settings.toYaml.toFile(ServerConstants.SETTINGS_CONFIG_PATH)
         }
     }
 
