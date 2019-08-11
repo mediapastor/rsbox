@@ -56,7 +56,7 @@ class AuthService : Service() {
     }
 
     private fun successfulLogin(client: Client, request: LoginRequest) {
-        val gameProtocol = GameProtocol(request.channel)
+        val gameProtocol = GameProtocol(request.channel, client)
         client.gameProtocol = gameProtocol
         client.channel.attr(GameHandler.PROTOCOL_KEY).set(gameProtocol)
 

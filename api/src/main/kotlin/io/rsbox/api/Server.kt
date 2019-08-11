@@ -11,4 +11,6 @@ interface Server {
      * Use this instead of println as it will keep the proper format.
      */
     val logger: KLogger
+
+    var world: World
 }

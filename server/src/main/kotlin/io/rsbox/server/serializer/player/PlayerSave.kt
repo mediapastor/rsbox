@@ -7,6 +7,7 @@ import io.rsbox.server.ServerConstants
 import io.rsbox.server.config.SettingsSpec
 import io.rsbox.server.model.entity.Client
 import io.rsbox.server.model.entity.Player
+import io.rsbox.server.model.world.Tile
 import io.rsbox.server.net.login.LoginRequest
 import org.mindrot.jbcrypt.BCrypt
 import java.io.File
@@ -65,5 +66,6 @@ object PlayerSave {
         client.clientResizable = request.resizableClient
         client.clientWidth = request.clientWidth
         client.clientHeight = request.clientHeight
+        client.tile = Tile(save[PlayerSpec.x], save[PlayerSpec.z], save[PlayerSpec.height])
     }
 }
