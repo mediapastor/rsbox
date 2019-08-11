@@ -9,4 +9,5 @@ run {
 }
 
 dependencies {
+    api project(':api')
 }

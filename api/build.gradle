@@ -1,0 +1,4 @@
+plugins {}
+
+group 'rsbox'
+version '0.1-ALPHA'

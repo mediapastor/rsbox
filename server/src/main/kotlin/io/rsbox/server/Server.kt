@@ -7,11 +7,15 @@ import io.netty.bootstrap.ServerBootstrap
 import io.netty.channel.ChannelOption
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.nio.NioServerSocketChannel
+import io.rsbox.api.Api
+import io.rsbox.api.EventManager
+import io.rsbox.api.event.ServerStartEvent
 import io.rsbox.server.net.ClientChannelHandler
 import io.rsbox.server.config.SettingsSpec
 import io.rsbox.server.model.World
 import io.rsbox.server.net.rsa.RSA
 import io.rsbox.server.service.ServiceManager
+import mu.KLogger
 import mu.KLogging
 import net.runelite.cache.fs.Store
 import java.io.File
@@ -22,7 +26,7 @@ import java.util.concurrent.TimeUnit
  * @author Kyle Escobar
  */
 
-class Server {
+class Server : io.rsbox.api.Server {
 
     /**
      * Public variables
@@ -41,6 +45,8 @@ class Server {
     private val ioGroup = NioEventLoopGroup(1)
     private val bootstrap = ServerBootstrap()
 
+    override val logger: KLogger = Companion.logger
+
     private val dirs = arrayOf(
         "rsbox/",
         "rsbox/data",
@@ -56,6 +62,12 @@ class Server {
     private val mainStopwatch = Stopwatch.createStarted()
 
    fun init() {
+       /**
+        * Hook into the API
+        */
+       Api.server = this
+       Api.init()
+
        logger.info { "Server starting initialization..." }
 
        logger.info { "Scanning directories." }
@@ -92,6 +104,11 @@ class Server {
     private fun start() {
         logger.info { "Preparing server." }
         startNetworking()
+
+        if(EventManager.trigger(ServerStartEvent(this))) {
+            logger.warn { "Server shutdown signal received." }
+            System.exit(0)
+        }
     }
 
     fun shutdown() {
