@@ -6,7 +6,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter
 import io.netty.handler.timeout.ReadTimeoutException
 import io.netty.util.AttributeKey
 import io.rsbox.server.net.handshake.HandshakeMessage
-import io.rsbox.server.net.protocol.GameProtocol
+import io.rsbox.server.net.protocol.ServerProtocol
 import io.rsbox.server.net.protocol.impl.JS5Protocol
 import io.rsbox.server.net.protocol.impl.LoginProtocol
 import mu.KLogging
@@ -55,6 +55,6 @@ class GameHandler : ChannelInboundHandlerAdapter() {
     }
 
     companion object : KLogging() {
-        val PROTOCOL_KEY: AttributeKey<GameProtocol> = AttributeKey.valueOf("protocol")
+        val PROTOCOL_KEY: AttributeKey<ServerProtocol> = AttributeKey.valueOf("protocol")
     }
 }

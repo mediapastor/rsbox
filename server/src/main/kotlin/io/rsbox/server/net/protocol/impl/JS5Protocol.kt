@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerContext
 import io.rsbox.server.Launcher
 import io.rsbox.server.net.js5.JS5Request
 import io.rsbox.server.net.js5.JS5Response
-import io.rsbox.server.net.protocol.GameProtocol
+import io.rsbox.server.net.protocol.ServerProtocol
 import mu.KLogging
 import net.runelite.cache.fs.Container
 import net.runelite.cache.fs.jagex.CompressionType
@@ -16,7 +16,7 @@ import net.runelite.cache.fs.jagex.DiskStorage
  * @author Kyle Escobar
  */
 
-class JS5Protocol(channel: Channel) : GameProtocol(channel) {
+class JS5Protocol(channel: Channel) : ServerProtocol(channel) {
     private val cacheStore = Launcher.server.cacheStore
 
     override fun receiveMessage(ctx: ChannelHandlerContext, msg: Any) {

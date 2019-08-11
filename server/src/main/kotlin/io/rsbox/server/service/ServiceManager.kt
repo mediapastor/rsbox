@@ -22,15 +22,17 @@ object ServiceManager : KLogging() {
             val inst = clazz.newInstance()
             services.add(inst)
             inst.loaded = true
-            inst.onStart()
-
             logger.info { "Started service ${clazz.simpleName}." }
+
+            inst.onStart()
         }
 
         logger.info { "Successfully started ${services.size} services in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}ms." }
     }
 
-    fun getService(clazz: Class<out Service>): Service {
-        return services.associate { it.javaClass to it }[clazz] ?: throw ClassNotFoundException("Unable to find loaded class ${clazz.simpleName}.")
+    @Suppress("UNCHECKED_CAST")
+    fun <T: Service> getService(clazz: Class<T>): T {
+        val map = services.associate { it::class.java to it }
+        return map[clazz] as T? ?: throw ClassNotFoundException("Unable to locate loaded service class ${clazz.simpleName}.")
     }
 }
