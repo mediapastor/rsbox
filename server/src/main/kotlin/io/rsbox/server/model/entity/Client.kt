@@ -1,19 +1,15 @@
 package io.rsbox.server.model.entity
 
-import com.uchuhimo.konf.Config
 import io.netty.channel.Channel
-import io.rsbox.server.ServerConstants
 import io.rsbox.server.net.login.LoginRequest
 import io.rsbox.server.net.protocol.impl.GameProtocol
 import io.rsbox.server.serializer.player.PlayerSave
-import io.rsbox.server.serializer.player.PlayerSpec
-import java.io.File
 
 /**
  * @author Kyle Escobar
  */
 
-class Client(val channel: Channel) : Player() {
+class Client(val channel: Channel) : Player(), io.rsbox.api.entity.Client {
     init {
         this.client = this
     }

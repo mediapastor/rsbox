@@ -2,14 +2,13 @@ package io.rsbox.server.service.impl
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
 import io.netty.channel.ChannelFutureListener
-import io.rsbox.server.Launcher
 import io.rsbox.server.Server
 import io.rsbox.server.config.SettingsSpec
 import io.rsbox.server.model.entity.Client
 import io.rsbox.server.net.GameHandler
 import io.rsbox.server.net.GameMessageEncoder
 import io.rsbox.server.net.PacketMetadata
-import io.rsbox.server.net.ServerResultType
+import io.rsbox.api.ServerResultType
 import io.rsbox.server.net.game.GamePacketDecoder
 import io.rsbox.server.net.game.GamePacketEncoder
 import io.rsbox.server.net.login.LoginRequest

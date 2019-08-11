@@ -2,7 +2,6 @@ package io.rsbox.server.model
 
 import io.rsbox.server.Server
 import io.rsbox.server.model.entity.LivingEntity
-import io.rsbox.server.model.entity.Npc
 import io.rsbox.server.model.entity.Player
 import java.security.SecureRandom
 import java.util.*
@@ -11,7 +10,7 @@ import java.util.*
  * @author Kyle Escobar
  */
 
-class World(val server: Server) {
+class World(val server: Server) : io.rsbox.api.World {
 
     val players: HashMap<Int, LivingEntity> = hashMapOf()
 

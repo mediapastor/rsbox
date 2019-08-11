@@ -8,7 +8,7 @@ import io.rsbox.server.model.World
  * @author Kyle Escobar
  */
 
-open class Player : LivingEntity() {
+open class Player : LivingEntity(), io.rsbox.api.entity.Player {
     var username = ""
 
     var displayName = ""

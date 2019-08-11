@@ -1,4 +1,4 @@
-package io.rsbox.server.net
+package io.rsbox.api
 
 /**
  * @author Kyle Escobar

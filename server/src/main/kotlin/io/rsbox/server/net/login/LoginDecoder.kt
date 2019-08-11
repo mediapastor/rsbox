@@ -5,7 +5,7 @@ import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import io.rsbox.server.Launcher
-import io.rsbox.server.net.ServerResultType
+import io.rsbox.api.ServerResultType
 import io.rsbox.server.net.StatefulFrameDecoder
 import io.rsbox.server.net.rsa.RSA
 import mu.KLogging

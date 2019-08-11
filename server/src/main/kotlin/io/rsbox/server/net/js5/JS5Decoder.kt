@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf
 import io.netty.channel.ChannelFutureListener
 import io.netty.channel.ChannelHandlerContext
 import io.rsbox.server.Launcher
-import io.rsbox.server.net.ServerResultType
+import io.rsbox.api.ServerResultType
 import io.rsbox.server.net.StatefulFrameDecoder
 import mu.KLogging
 

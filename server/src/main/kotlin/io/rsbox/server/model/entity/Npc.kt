@@ -4,5 +4,5 @@ package io.rsbox.server.model.entity
  * @author Kyle Escobar
  */
 
-class Npc : LivingEntity() {
+class Npc : LivingEntity(), io.rsbox.api.entity.Npc {
 }
