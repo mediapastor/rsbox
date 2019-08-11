@@ -21,5 +21,5 @@ object PlayerSpec : ConfigSpec("player") {
      */
     val x by required<Int>("location.x")
     val z by required<Int>("location.z")
-    val height by required<Int>("loccation.height")
+    val height by required<Int>("location.height")
 }

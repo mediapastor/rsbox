@@ -7,7 +7,7 @@ import io.netty.channel.ChannelHandlerContext
  * @author Kyle Escobar
  */
 
-abstract class GameProtocol(open val channel: Channel) {
+abstract class ServerProtocol(open val channel: Channel) {
     abstract fun receiveMessage(ctx: ChannelHandlerContext, msg: Any)
 
     abstract fun terminate()
