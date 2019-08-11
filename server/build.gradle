@@ -1,0 +1,13 @@
+plugins {}
+
+apply plugin: 'application'
+
+mainClassName = 'io.rsbox.server.Launcher'
+
+run {
+    workingDir = rootProject.projectDir
+}
+
+dependencies {
+    api project(':api')
+}
