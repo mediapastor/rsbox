@@ -1,7 +1,11 @@
 package io.rsbox.server.model.entity
 
 import io.netty.channel.Channel
+import io.rsbox.api.EventManager
+import io.rsbox.api.event.PlayerLoadEvent
+import io.rsbox.api.event.PlayerLoginEvent
 import io.rsbox.server.ServerConstants
+import io.rsbox.server.model.world.World
 import io.rsbox.server.net.login.LoginRequest
 import io.rsbox.server.net.packet.Message
 import io.rsbox.server.net.packet.impl.message.RebuildLoginMessage
@@ -48,8 +52,9 @@ class Client(val channel: Channel) : Player(), io.rsbox.api.entity.Client {
 
         val tiles = IntArray(gpiTileHashMultipliers.size)
         System.arraycopy(gpiTileHashMultipliers, 0, tiles, 0, tiles.size)
+        write(RebuildLoginMessage(index, tile, tiles, (world as World).xteaKeyService))
 
-        write(RebuildLoginMessage(index, tile, tiles, world.xteaKeyService))
+        EventManager.trigger(PlayerLoadEvent(this))
     }
 
     override fun handleMessages() {

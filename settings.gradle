@@ -1,3 +1,4 @@
 rootProject.name = 'rsbox'
 include ':server'
 include ':api'
+include ':game'

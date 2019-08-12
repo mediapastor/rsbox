@@ -10,23 +10,23 @@ import io.rsbox.server.net.packet.Message
  */
 
 open class Player : LivingEntity(), io.rsbox.api.entity.Player {
-    var username = ""
+    override var username = ""
 
-    var displayName = ""
+    override var displayName = ""
 
-    var password = ""
+    override var password = ""
 
-    var uuid = ""
+    override var uuid = ""
 
-    var privilege = 0
+    override var privilege = 0
 
     lateinit var client: Client
 
     var lastIndex = -1
 
-    val world: World = Launcher.server.world as World
+    override var world: io.rsbox.api.World = Launcher.server.world
 
-    val server: Server = Launcher.server
+    override var server: io.rsbox.api.Server = Launcher.server
 
     /**
      * Rendering data

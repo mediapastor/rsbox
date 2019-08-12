@@ -3,6 +3,7 @@ package io.rsbox.server.net.protocol.impl
 import io.netty.channel.Channel
 import io.netty.channel.ChannelHandlerContext
 import io.rsbox.server.model.entity.Client
+import io.rsbox.server.model.world.World
 import io.rsbox.server.net.packet.Message
 import io.rsbox.server.net.packet.MessageHandler
 import io.rsbox.server.net.packet.builder.GamePacket
@@ -55,7 +56,7 @@ class GameProtocol(channel: Channel, val client: Client) : ServerProtocol(channe
     fun handleMessages() {
         for(i in 0 until 120) {
             val next = messages.poll() ?: break
-            next.handler.handle(client, world, next.message)
+            next.handler.handle(client, (world as World), next.message)
         }
     }
 

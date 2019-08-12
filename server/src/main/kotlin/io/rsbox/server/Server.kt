@@ -10,6 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.rsbox.api.Api
 import io.rsbox.api.EventManager
 import io.rsbox.api.event.ServerStartEvent
+import io.rsbox.game.Game
 import io.rsbox.server.net.ClientChannelHandler
 import io.rsbox.server.config.SettingsSpec
 import io.rsbox.server.model.world.World
@@ -96,6 +97,8 @@ class Server : io.rsbox.api.Server {
         * Start the services via [ServiceManager]
         */
        ServiceManager.init()
+
+       Game.init()
 
        start()
    }
