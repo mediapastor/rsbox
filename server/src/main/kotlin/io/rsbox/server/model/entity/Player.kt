@@ -1,8 +1,6 @@
 package io.rsbox.server.model.entity
 
 import io.rsbox.server.Launcher
-import io.rsbox.server.Server
-import io.rsbox.server.model.world.World
 import io.rsbox.server.net.packet.Message
 
 /**
@@ -24,14 +22,14 @@ open class Player : LivingEntity(), io.rsbox.api.entity.Player {
 
     var lastIndex = -1
 
-    override var world: io.rsbox.api.World = Launcher.server.world
+    override var world: io.rsbox.api.world.World = Launcher.server.world
 
     override var server: io.rsbox.api.Server = Launcher.server
 
     /**
      * Rendering data
      */
-    internal val gpiLocalPlayers = hashMapOf<Int, Player>()
+    internal val gpiLocalPlayers = arrayOfNulls<Player>(2048)
 
     internal val gpiLocalIndexes = IntArray(2048)
 

@@ -16,6 +16,5 @@ object Game {
     }
 
     private fun setupGameWindows(player: Player) {
-
     }
 }

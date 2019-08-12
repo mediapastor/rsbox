@@ -10,7 +10,7 @@ import io.rsbox.server.service.impl.GameService
 
 class MessageHandlerTask : GameTask {
     override fun execute(world: World, service: GameService) {
-        world.players.forEach { _, player ->
+        world.players.forEach { player ->
             (player as Player).handleMessages()
         }
     }
