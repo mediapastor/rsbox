@@ -13,6 +13,7 @@ import io.rsbox.api.event.ServerStartEvent
 import io.rsbox.game.Game
 import io.rsbox.server.net.ClientChannelHandler
 import io.rsbox.server.config.SettingsSpec
+import io.rsbox.server.def.DefinitionSet
 import io.rsbox.server.model.world.World
 import io.rsbox.server.net.rsa.RSA
 import io.rsbox.server.service.ServiceManager
@@ -32,6 +33,8 @@ class Server : io.rsbox.api.Server {
      * Public variables
      */
     lateinit var cacheStore: Store
+
+    val definitions: DefinitionSet = DefinitionSet()
 
     val revision: Int = settings[SettingsSpec.revision]
 
@@ -76,6 +79,8 @@ class Server : io.rsbox.api.Server {
        initConfigs()
 
        initCache()
+
+       definitions.loadAll(cacheStore)
 
        /**
         * Hook shutdown event for proper shutdowns

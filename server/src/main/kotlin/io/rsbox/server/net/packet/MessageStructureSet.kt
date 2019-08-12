@@ -2,7 +2,6 @@ package io.rsbox.server.net.packet
 
 import io.rsbox.server.net.packet.builder.PacketDef
 import io.rsbox.server.net.packet.builder.PacketDirection
-import io.rsbox.server.net.packet.impl.MessageDecoderSet
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import mu.KLogging
 import org.reflections.Reflections

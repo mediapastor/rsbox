@@ -19,7 +19,7 @@ class World(val server: Server) : World {
 
     val npcs = LivingEntityList<Npc>(arrayOfNulls(25565))
 
-    val random: Random = SecureRandom()
+    val random = SecureRandom()
 
     var currentCycle = 0
 

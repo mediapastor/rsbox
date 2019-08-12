@@ -1,8 +1,5 @@
-package io.rsbox.server.net.packet.impl
+package io.rsbox.server.net.packet
 
-import io.rsbox.server.net.packet.Message
-import io.rsbox.server.net.packet.MessageDecoder
-import io.rsbox.server.net.packet.MessageHandler
 import io.rsbox.server.service.ServiceManager
 import io.rsbox.server.service.impl.GameService
 

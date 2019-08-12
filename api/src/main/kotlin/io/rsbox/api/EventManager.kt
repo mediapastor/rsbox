@@ -26,8 +26,6 @@ object EventManager {
         classes.forEach { clazz ->
             events.add(clazz.kotlin)
         }
-
-        Api.server.logger.info { "Successfully registered ${events.size} API events." }
     }
 
     /**
