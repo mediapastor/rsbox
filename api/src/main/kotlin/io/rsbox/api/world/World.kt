@@ -1,4 +1,4 @@
-package io.rsbox.api
+package io.rsbox.api.world
 
 import io.rsbox.api.entity.LivingEntity
 import io.rsbox.api.entity.Player
@@ -8,9 +8,11 @@ import io.rsbox.api.entity.Player
  */
 
 interface World {
-    val players: HashMap<Int, LivingEntity>
+    fun init()
 
-    val npcs: HashMap<Int, LivingEntity>
+    fun load()
+
+    fun unload()
 
     fun register(player: Player): Boolean
 }

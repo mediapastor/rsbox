@@ -1,7 +1,7 @@
 package io.rsbox.server.net.packet.impl.encoder
 
 import io.netty.buffer.Unpooled
-import io.rsbox.server.model.world.Chunk
+import io.rsbox.api.world.Chunk
 import io.rsbox.server.net.packet.MessageEncoder
 import io.rsbox.server.net.packet.builder.GamePacketBuilder
 import io.rsbox.server.net.packet.impl.message.RebuildLoginMessage

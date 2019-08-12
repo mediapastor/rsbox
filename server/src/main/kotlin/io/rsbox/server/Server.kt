@@ -16,7 +16,6 @@ import io.rsbox.server.config.SettingsSpec
 import io.rsbox.server.model.world.World
 import io.rsbox.server.net.rsa.RSA
 import io.rsbox.server.service.ServiceManager
-import mu.KLogger
 import mu.KLogging
 import net.runelite.cache.fs.Store
 import java.io.File
@@ -36,7 +35,8 @@ class Server : io.rsbox.api.Server {
 
     val revision: Int = settings[SettingsSpec.revision]
 
-    override lateinit var world: io.rsbox.api.World
+    lateinit var rsworld: World
+    override lateinit var world: io.rsbox.api.world.World
 
     /**
      * Networking vars
@@ -45,8 +45,6 @@ class Server : io.rsbox.api.Server {
     private val acceptGroup = NioEventLoopGroup(2)
     private val ioGroup = NioEventLoopGroup(1)
     private val bootstrap = ServerBootstrap()
-
-    override val logger: KLogger = Companion.logger
 
     private val dirs = arrayOf(
         "rsbox/",
@@ -89,8 +87,9 @@ class Server : io.rsbox.api.Server {
        /**
         * Load the world
         */
-       world = World(this)
-       (world as World).init()
+       rsworld = World(this)
+       rsworld.init()
+       world = rsworld
        logger.info { "Loaded the game world." }
 
        /**

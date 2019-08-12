@@ -5,4 +5,11 @@ package io.rsbox.api.entity
  */
 
 interface Client : Player {
+    var clientResizable: Boolean
+
+    var clientWidth: Int
+
+    var clientHeight: Int
+
+    fun register()
 }

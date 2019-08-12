@@ -1,6 +1,6 @@
 package io.rsbox.server.model.entity
 
-import io.rsbox.server.model.world.Tile
+import io.rsbox.api.world.Tile
 
 /**
  * @author Kyle Escobar
