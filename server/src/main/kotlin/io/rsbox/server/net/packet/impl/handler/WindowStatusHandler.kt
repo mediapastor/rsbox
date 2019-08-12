@@ -1,6 +1,6 @@
 package io.rsbox.server.net.packet.impl.handler
 
-import io.rsbox.server.model.World
+import io.rsbox.server.model.world.World
 import io.rsbox.server.model.entity.Client
 import io.rsbox.server.net.packet.MessageHandler
 import io.rsbox.server.net.packet.impl.message.WindowStatusMessage

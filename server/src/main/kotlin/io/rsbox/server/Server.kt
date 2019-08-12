@@ -10,9 +10,10 @@ import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.rsbox.api.Api
 import io.rsbox.api.EventManager
 import io.rsbox.api.event.ServerStartEvent
+import io.rsbox.game.Game
 import io.rsbox.server.net.ClientChannelHandler
 import io.rsbox.server.config.SettingsSpec
-import io.rsbox.server.model.World
+import io.rsbox.server.model.world.World
 import io.rsbox.server.net.rsa.RSA
 import io.rsbox.server.service.ServiceManager
 import mu.KLogger
@@ -35,7 +36,7 @@ class Server : io.rsbox.api.Server {
 
     val revision: Int = settings[SettingsSpec.revision]
 
-    lateinit var world: World
+    override lateinit var world: io.rsbox.api.World
 
     /**
      * Networking vars
@@ -86,16 +87,18 @@ class Server : io.rsbox.api.Server {
        RSA.init()
 
        /**
+        * Load the world
+        */
+       world = World(this)
+       (world as World).init()
+       logger.info { "Loaded the game world." }
+
+       /**
         * Start the services via [ServiceManager]
         */
        ServiceManager.init()
 
-       /**
-        * Load the world
-        */
-       world = World(this)
-       world.init()
-       logger.info { "Loaded the game world." }
+       Game.init()
 
        start()
    }

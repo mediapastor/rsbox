@@ -1,8 +1,8 @@
-package io.rsbox.server.model
+package io.rsbox.server.model.world
 
 import io.rsbox.server.Server
-import io.rsbox.server.model.entity.LivingEntity
 import io.rsbox.server.model.entity.Player
+import io.rsbox.server.service.impl.XteaKeyService
 import java.security.SecureRandom
 import java.util.*
 
@@ -12,13 +12,15 @@ import java.util.*
 
 class World(val server: Server) : io.rsbox.api.World {
 
-    val players: HashMap<Int, LivingEntity> = hashMapOf()
+    override val players: HashMap<Int, io.rsbox.api.entity.LivingEntity> = hashMapOf()
 
-    val npcs: HashMap<Int, LivingEntity> = hashMapOf()
+    override val npcs: HashMap<Int, io.rsbox.api.entity.LivingEntity> = hashMapOf()
 
     val random: Random = SecureRandom()
 
     var currentCycle = 0
+
+    lateinit var xteaKeyService: XteaKeyService
 
 
     /**
@@ -44,6 +46,10 @@ class World(val server: Server) : io.rsbox.api.World {
     fun register(player: Player): Boolean {
         players[getAvailablePlayerIndex()] = player
         return true
+    }
+
+    override fun register(player: io.rsbox.api.entity.Player): Boolean {
+        return this.register(player as Player)
     }
 
     private fun getAvailablePlayerIndex(): Int {

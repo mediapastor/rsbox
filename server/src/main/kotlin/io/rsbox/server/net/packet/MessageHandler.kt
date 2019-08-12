@@ -1,6 +1,6 @@
 package io.rsbox.server.net.packet
 
-import io.rsbox.server.model.World
+import io.rsbox.server.model.world.World
 import io.rsbox.server.model.entity.Client
 
 /**

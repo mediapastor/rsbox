@@ -2,6 +2,7 @@ package io.rsbox.server.service.impl
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
 import io.netty.channel.ChannelFutureListener
+import io.rsbox.api.EventManager
 import io.rsbox.server.Server
 import io.rsbox.server.config.SettingsSpec
 import io.rsbox.server.model.entity.Client
@@ -9,6 +10,7 @@ import io.rsbox.server.net.GameHandler
 import io.rsbox.server.net.GameMessageEncoder
 import io.rsbox.server.net.PacketMetadata
 import io.rsbox.api.ServerResultType
+import io.rsbox.api.event.PlayerLoginEvent
 import io.rsbox.server.net.game.GamePacketDecoder
 import io.rsbox.server.net.game.GamePacketEncoder
 import io.rsbox.server.net.login.LoginRequest
@@ -56,7 +58,7 @@ class AuthService : Service() {
     }
 
     private fun successfulLogin(client: Client, request: LoginRequest) {
-        val gameProtocol = GameProtocol(request.channel)
+        val gameProtocol = GameProtocol(request.channel, client)
         client.gameProtocol = gameProtocol
         client.channel.attr(GameHandler.PROTOCOL_KEY).set(gameProtocol)
 
@@ -126,9 +128,15 @@ class AuthService : Service() {
                     ServerResultType.ACCEPTABLE -> {
                         val client = Client(request.channel)
                         client.init(request)
-                        client.channel.write(LoginResponse(index = client.index, privilege = client.privilege))
-                        successfulLogin(client, request)
-                        logger.info { "Login request accepted for user ${request.username}." }
+                        val event = PlayerLoginEvent(client)
+                        if(EventManager.trigger(event)) {
+                            request.channel.writeAndFlush(event.returnServerResult).addListener { ChannelFutureListener.CLOSE }
+                            logger.info { "Login request cancelled for user ${request.username} with result ${serverResult}." }
+                        } else {
+                            client.channel.write(LoginResponse(index = client.index, privilege = client.privilege))
+                            successfulLogin(client, request)
+                            logger.info { "Login request accepted for user ${request.username}." }
+                        }
                     }
                     else -> {
                         request.channel.writeAndFlush(serverResult).addListener { ChannelFutureListener.CLOSE }

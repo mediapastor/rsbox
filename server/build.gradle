@@ -9,5 +9,6 @@ run {
 }
 
 dependencies {
-    api project(':api')
+    compile project(':api')
+    compile project(':game')
 }
