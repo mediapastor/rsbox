@@ -16,8 +16,11 @@ object Varp {
     const val DISABLE_AUTO_RETALIATE_VARP = 172
     const val SPECIAL_ATTACK_VARP = 301
     const val CANOE_STATION_CHANGES = 674
+    const val QUEST_POINTS = 101
+    const val COOKS_ASSISTANT = 29
+    const val SHEEP_SHEARER = 179
+    const val X_MARKS_THE_SPOT = 2111
     private const val SPECIAL_ATTACK_ENERGY_VARP = 300
     private const val RUN_ENABLED_VARP = 173
     private const val HP_ORB_VARP = 102
-
 }
