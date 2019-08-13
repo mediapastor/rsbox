@@ -16,6 +16,8 @@ import io.rsbox.server.config.SettingsSpec
 import io.rsbox.server.def.DefinitionSet
 import io.rsbox.server.model.world.World
 import io.rsbox.server.net.rsa.RSA
+import io.rsbox.server.plugin.PluginLoader
+import io.rsbox.server.plugin.PluginManager
 import io.rsbox.server.service.ServiceManager
 import mu.KLogging
 import net.runelite.cache.fs.Store
@@ -63,6 +65,8 @@ class Server : io.rsbox.api.Server {
 
     private val mainStopwatch = Stopwatch.createStarted()
 
+    private val pluginLoader = PluginLoader(this)
+
    fun init() {
        /**
         * Hook into the API
@@ -85,7 +89,7 @@ class Server : io.rsbox.api.Server {
        /**
         * Hook shutdown event for proper shutdowns
         */
-       interceptShutdown { this.shutdown() }
+       //interceptShutdown { this.shutdown() }
 
        RSA.init()
 
@@ -103,6 +107,9 @@ class Server : io.rsbox.api.Server {
        ServiceManager.init()
 
        Game.init()
+
+       logger.info { "Loading plugins..." }
+       loadPlugins()
 
        start()
    }
@@ -187,6 +194,14 @@ class Server : io.rsbox.api.Server {
         stopwatch.stop()
 
         logger.info("Loaded the server cache files in {}ms.", stopwatch.elapsed(TimeUnit.MILLISECONDS))
+    }
+
+    private fun loadPlugins() {
+        val path = File(ServerConstants.PLUGINS_PATH)
+        val files = path.listFiles().filter { it.isFile }
+        files.forEach { jar ->
+            pluginLoader.loadPlugin(jar)
+        }
     }
 
     private interface ShutdownHook {

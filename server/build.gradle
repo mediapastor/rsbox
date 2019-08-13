@@ -11,4 +11,9 @@ run {
 dependencies {
     compile project(':api')
     compile project(':game')
+
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
+    compile "io.github.microutils:kotlin-logging:$kloggingVersion"
+    compile 'com.uchuhimo:konf:0.13.3'
 }
