@@ -17,7 +17,6 @@ import io.rsbox.server.def.DefinitionSet
 import io.rsbox.server.model.world.World
 import io.rsbox.server.net.rsa.RSA
 import io.rsbox.server.plugin.PluginLoader
-import io.rsbox.server.plugin.PluginManager
 import io.rsbox.server.service.ServiceManager
 import mu.KLogging
 import net.runelite.cache.fs.Store
@@ -157,7 +156,7 @@ class Server : io.rsbox.api.Server {
             settings.toYaml.toFile(ServerConstants.SETTINGS_CONFIG_PATH)
             logger.info("Created default settings.yml as it did not exist.")
         } else {
-            settings.from.yaml.file(ServerConstants.SETTINGS_CONFIG_PATH)
+            settings = Config { addSpec(SettingsSpec) }.from.yaml.file(ServerConstants.SETTINGS_CONFIG_PATH)
             logger.info { "Loaded server settings from ${ServerConstants.SETTINGS_CONFIG_PATH}." }
 
             /**
@@ -222,6 +221,6 @@ class Server : io.rsbox.api.Server {
     }
 
     companion object : KLogging() {
-        val settings = Config { addSpec(SettingsSpec) }
+        var settings = Config { addSpec(SettingsSpec) }
     }
 }
