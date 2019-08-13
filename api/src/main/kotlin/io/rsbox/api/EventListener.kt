@@ -11,17 +11,17 @@ class EventListener {
     /**
      * The event kotlin class that the logic should be executed when triggered.
      */
-    internal lateinit var eventClass: KClass<out Event>
+    lateinit var eventClass: KClass<out Event>
     /**
      * The lambda logic to be executed.
      */
-    internal lateinit var logic: Event.() -> Unit
+    lateinit var logic: Event.() -> Unit
 
     /**
      * Registers the listener's logic with the [EventManager]
      */
-    internal fun register() {
-        EventManager.registerListener(eventClass, logic)
+    private fun register() {
+        EventManager.registerListener(this)
     }
 
     companion object {
