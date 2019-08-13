@@ -34,4 +34,7 @@ object Varbit {
     const val LAW_ALTAR = 614
     const val DEATH_ALTAR = 617
     const val WRATH_ALTAR = 6220
+    const val PRIORITY_PID_VARP = 1075
+    const val SELECTED_AUTOCAST_VARBIT = 276
+    const val DEFENSIVE_MAGIC_CAST_VARBIT = 2668
 }
