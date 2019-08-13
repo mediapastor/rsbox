@@ -18,4 +18,9 @@ object Varbit {
     const val CHATBOX_SOLID = 2570
     const val SIDESTONES_ARRAGEMENT = 4607
     const val CLOSE_TABS_WITH_HOTKEY = 4611
+    const val ROWING_CANOE_SCENE = 1843
+    const val QUEST_TAB = 8168
+    const val WINDMILL_FLOUR_COLLECTABLE = 5325
+    const val WINDMILL_FLOUR_AMOUNT = 4920
+    const val SMITHING_CURRENT_BAR = 3216
 }
