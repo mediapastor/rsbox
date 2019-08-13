@@ -20,4 +20,10 @@ object SettingsSpec : ConfigSpec("server") {
     val home_x by optional(3221, "home.x")
     val home_z by optional(3218, "home.z")
     val home_height by optional(0, "home.height")
+    val sql_enabled by optional(false,"sql.enabled")
+    val sql_server by optional("localhost", "sql.server")
+    val sql_port by optional(3363,"sql.port")
+    val sql_database by optional("mydb", "sql.database")
+    val sql_username by optional("myuser","sql.username")
+    val sql_password by optional("mypassword", "sql.password")
 }

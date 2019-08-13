@@ -1,4 +1,4 @@
-package io.rsbox.server.model.world
+package io.rsbox.api.world
 
 /**
  * @author Kyle Escobar

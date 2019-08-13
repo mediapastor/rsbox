@@ -1,6 +1,6 @@
 package io.rsbox.server.net.packet.impl.message
 
-import io.rsbox.server.model.world.Tile
+import io.rsbox.api.world.Tile
 import io.rsbox.server.net.packet.Message
 import io.rsbox.server.net.packet.builder.*
 import io.rsbox.server.net.packet.impl.encoder.RebuildLoginEncoder

@@ -1,6 +1,9 @@
 package io.rsbox.server.model.world
 
+import io.rsbox.api.world.World
 import io.rsbox.server.Server
+import io.rsbox.server.model.LivingEntityList
+import io.rsbox.server.model.entity.Npc
 import io.rsbox.server.model.entity.Player
 import io.rsbox.server.service.impl.XteaKeyService
 import java.security.SecureRandom
@@ -10,13 +13,13 @@ import java.util.*
  * @author Kyle Escobar
  */
 
-class World(val server: Server) : io.rsbox.api.World {
+class World(val server: Server) : World {
 
-    override val players: HashMap<Int, io.rsbox.api.entity.LivingEntity> = hashMapOf()
+    val players = LivingEntityList<Player>(arrayOfNulls(2048))
 
-    override val npcs: HashMap<Int, io.rsbox.api.entity.LivingEntity> = hashMapOf()
+    val npcs = LivingEntityList<Npc>(arrayOfNulls(25565))
 
-    val random: Random = SecureRandom()
+    val random = SecureRandom()
 
     var currentCycle = 0
 
@@ -26,15 +29,15 @@ class World(val server: Server) : io.rsbox.api.World {
     /**
      * World base methods
      */
-    fun init() {
+    override fun init() {
 
     }
 
-    fun load() {
+    override fun load() {
 
     }
 
-    fun unload() {
+    override fun unload() {
 
     }
 
@@ -44,22 +47,15 @@ class World(val server: Server) : io.rsbox.api.World {
      * Sets the player index.
      */
     fun register(player: Player): Boolean {
-        players[getAvailablePlayerIndex()] = player
-        return true
+        val registered = players.add(player)
+        if(registered) {
+            player.lastIndex = player.index
+            return true
+        }
+        return false
     }
 
     override fun register(player: io.rsbox.api.entity.Player): Boolean {
         return this.register(player as Player)
-    }
-
-    private fun getAvailablePlayerIndex(): Int {
-        var maxIndex = 0
-        players.forEach { index, _ ->
-            if(maxIndex == 0 || maxIndex > index) {
-                maxIndex = index
-            }
-        }
-
-        return maxIndex + 1
     }
 }

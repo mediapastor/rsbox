@@ -1,9 +1,15 @@
 package io.rsbox.server.model.entity
 
+import io.rsbox.api.inter.*
 import io.rsbox.server.Launcher
 import io.rsbox.server.Server
-import io.rsbox.server.model.world.World
+import io.rsbox.server.def.impl.VarbitDef
+import io.rsbox.server.def.impl.VarpDef
+import io.rsbox.server.model.data.varp.VarpSet
 import io.rsbox.server.net.packet.Message
+import io.rsbox.server.net.packet.impl.message.InterfaceOpenSubMessage
+import io.rsbox.server.net.packet.impl.message.InterfaceOpenTopMessage
+import io.rsbox.server.net.packet.impl.message.RunClientScriptMessage
 
 /**
  * @author Kyle Escobar
@@ -24,14 +30,14 @@ open class Player : LivingEntity(), io.rsbox.api.entity.Player {
 
     var lastIndex = -1
 
-    override var world: io.rsbox.api.World = Launcher.server.world
+    override var world: io.rsbox.api.world.World = Launcher.server.world
 
-    override var server: io.rsbox.api.Server = Launcher.server
+    final override var server: io.rsbox.api.Server = Launcher.server
 
     /**
      * Rendering data
      */
-    internal val gpiLocalPlayers = hashMapOf<Int, Player>()
+    internal val gpiLocalPlayers = arrayOfNulls<Player>(2048)
 
     internal val gpiLocalIndexes = IntArray(2048)
 
@@ -46,6 +52,56 @@ open class Player : LivingEntity(), io.rsbox.api.entity.Player {
     internal val gpiTileHashMultipliers = IntArray(2048)
 
     /**
+     * Interface
+     */
+    override val interfaces by lazy { InterfaceSet() }
+
+    override fun openOverlayInterface(displayMode: DisplayMode) {
+        if(displayMode != interfaces.displayMode) {
+            interfaces.setVisible(getDisplayComponentId(interfaces.displayMode), getChildId(InterfaceDestination.MAIN_SCREEN, interfaces.displayMode), false)
+        }
+        val component = getDisplayComponentId(displayMode)
+        interfaces.setVisible(getDisplayComponentId(displayMode), 0, true)
+        write(InterfaceOpenTopMessage(component))
+    }
+
+    override fun getInterfaceAt(dest: InterfaceDestination): Int {
+        val displayMode = interfaces.displayMode
+        val child = getChildId(dest, displayMode)
+        val parent = getDisplayComponentId(displayMode)
+        return interfaces.getInterfaceAt(parent, child)
+    }
+
+    override fun openInterface(dest: InterfaceDestination, autoClose: Boolean) {
+        val displayMode = if(!autoClose || dest.fullscreenChildId == -1) interfaces.displayMode else DisplayMode.FULLSCREEN
+        val child = getChildId(dest, displayMode)
+        val parent = getDisplayComponentId(displayMode)
+        if(displayMode == DisplayMode.FULLSCREEN) {
+            openOverlayInterface(displayMode)
+        }
+        openInterface(parent, child, dest.interfaceId, if(dest.clickThrough) 1 else 0, isModal = dest == InterfaceDestination.MAIN_SCREEN)
+    }
+
+    override fun openInterface(parent: Int, child: Int, interfaceId: Int, type: Int, isModal: Boolean) {
+        if(isModal) {
+            interfaces.openModal(parent, child, interfaceId)
+        } else {
+            interfaces.open(parent, child, interfaceId)
+        }
+        write(InterfaceOpenSubMessage(parent, child, interfaceId, type))
+    }
+
+    override fun openInterface(interfaceId: Int, dest: InterfaceDestination, fullscreen: Boolean) {
+        val displayMode = if(!fullscreen || dest.fullscreenChildId == -1) interfaces.displayMode else DisplayMode.FULLSCREEN
+        val child = getChildId(dest, displayMode)
+        val parent = getDisplayComponentId(displayMode)
+        if(displayMode == DisplayMode.FULLSCREEN) {
+            openOverlayInterface(displayMode)
+        }
+        openInterface(parent, child, interfaceId, if(dest.clickThrough) 1 else 0, isModal = dest == InterfaceDestination.MAIN_SCREEN)
+    }
+
+    /**
      * Send Packets
      */
     open fun handleMessages() {}
@@ -57,4 +113,36 @@ open class Player : LivingEntity(), io.rsbox.api.entity.Player {
     open fun channelFlush() {}
 
     open fun channelClose() {}
+
+    /**
+     * Varps / Varbits
+     */
+    private val varps = VarpSet(maxVarps = (server as Server).definitions.getCount(VarpDef::class.java))
+
+    override fun getVarbit(id: Int): Int {
+        val def = (server as Server).definitions.get(VarbitDef::class.java, id)
+        return varps.getBit(def.varp, def.startBit, def.endBit)
+    }
+
+    override fun getVarp(id: Int): Int = varps.getState(id)
+
+    override fun setVarp(id: Int, value: Int) {
+        varps.setState(id, value)
+    }
+
+    override fun setVarbit(id: Int, value: Int) {
+        val def = (server as Server).definitions.get(VarbitDef::class.java, id)
+        varps.setBit(def.varp, def.startBit, def.endBit, value)
+    }
+
+    override fun syncVarp(id: Int) {
+        setVarp(id, getVarp(id))
+    }
+
+    /**
+     * Helper Methods
+     */
+    override fun runClientScript(id: Int, vararg args: Any) {
+        write(RunClientScriptMessage(id, *args))
+    }
 }

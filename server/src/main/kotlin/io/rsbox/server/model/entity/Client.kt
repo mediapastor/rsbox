@@ -21,15 +21,15 @@ class Client(val channel: Channel) : Player(), io.rsbox.api.entity.Client {
         this.client = this
     }
 
-    var clientResizable = false
+    override var clientResizable = false
 
-    var clientWidth = 0
+    override var clientWidth = 0
 
-    var clientHeight = 0
+    override var clientHeight = 0
 
     lateinit var gameProtocol: GameProtocol
 
-    fun register() {
+    override fun register() {
         this.world.register(this)
     }
 
@@ -47,7 +47,7 @@ class Client(val channel: Channel) : Player(), io.rsbox.api.entity.Client {
             if(i == index) continue
 
             gpiExternalIndexes[gpiExternalCount++] = i
-            gpiTileHashMultipliers[i] = if(world.players[i] != null) (world.players[i] as Player).tile.asTileHashMultiplier else 0
+            gpiTileHashMultipliers[i] = if(i < (world as World).players.capacity) (world as World).players[i]?.tile?.asTileHashMultiplier ?: 0 else 0
         }
 
         val tiles = IntArray(gpiTileHashMultipliers.size)

@@ -13,10 +13,11 @@ import io.rsbox.api.event.ServerStartEvent
 import io.rsbox.game.Game
 import io.rsbox.server.net.ClientChannelHandler
 import io.rsbox.server.config.SettingsSpec
+import io.rsbox.server.def.DefinitionSet
 import io.rsbox.server.model.world.World
 import io.rsbox.server.net.rsa.RSA
+import io.rsbox.server.plugin.PluginLoader
 import io.rsbox.server.service.ServiceManager
-import mu.KLogger
 import mu.KLogging
 import net.runelite.cache.fs.Store
 import java.io.File
@@ -34,9 +35,12 @@ class Server : io.rsbox.api.Server {
      */
     lateinit var cacheStore: Store
 
+    val definitions: DefinitionSet = DefinitionSet()
+
     val revision: Int = settings[SettingsSpec.revision]
 
-    override lateinit var world: io.rsbox.api.World
+    lateinit var rsworld: World
+    override lateinit var world: io.rsbox.api.world.World
 
     /**
      * Networking vars
@@ -45,8 +49,6 @@ class Server : io.rsbox.api.Server {
     private val acceptGroup = NioEventLoopGroup(2)
     private val ioGroup = NioEventLoopGroup(1)
     private val bootstrap = ServerBootstrap()
-
-    override val logger: KLogger = Companion.logger
 
     private val dirs = arrayOf(
         "rsbox/",
@@ -61,6 +63,8 @@ class Server : io.rsbox.api.Server {
     )
 
     private val mainStopwatch = Stopwatch.createStarted()
+
+    private val pluginLoader = PluginLoader(this)
 
    fun init() {
        /**
@@ -79,18 +83,21 @@ class Server : io.rsbox.api.Server {
 
        initCache()
 
+       definitions.loadAll(cacheStore)
+
        /**
         * Hook shutdown event for proper shutdowns
         */
-       interceptShutdown { this.shutdown() }
+       //interceptShutdown { this.shutdown() }
 
        RSA.init()
 
        /**
         * Load the world
         */
-       world = World(this)
-       (world as World).init()
+       rsworld = World(this)
+       rsworld.init()
+       world = rsworld
        logger.info { "Loaded the game world." }
 
        /**
@@ -99,6 +106,9 @@ class Server : io.rsbox.api.Server {
        ServiceManager.init()
 
        Game.init()
+
+       logger.info { "Loading plugins..." }
+       loadPlugins()
 
        start()
    }
@@ -146,7 +156,7 @@ class Server : io.rsbox.api.Server {
             settings.toYaml.toFile(ServerConstants.SETTINGS_CONFIG_PATH)
             logger.info("Created default settings.yml as it did not exist.")
         } else {
-            settings.from.yaml.file(ServerConstants.SETTINGS_CONFIG_PATH)
+            settings = Config { addSpec(SettingsSpec) }.from.yaml.file(ServerConstants.SETTINGS_CONFIG_PATH)
             logger.info { "Loaded server settings from ${ServerConstants.SETTINGS_CONFIG_PATH}." }
 
             /**
@@ -185,6 +195,14 @@ class Server : io.rsbox.api.Server {
         logger.info("Loaded the server cache files in {}ms.", stopwatch.elapsed(TimeUnit.MILLISECONDS))
     }
 
+    private fun loadPlugins() {
+        val path = File(ServerConstants.PLUGINS_PATH)
+        val files = path.listFiles().filter { it.isFile }
+        files.forEach { jar ->
+            pluginLoader.loadPlugin(jar)
+        }
+    }
+
     private interface ShutdownHook {
         fun abort()
     }
@@ -203,6 +221,6 @@ class Server : io.rsbox.api.Server {
     }
 
     companion object : KLogging() {
-        val settings = Config { addSpec(SettingsSpec) }
+        var settings = Config { addSpec(SettingsSpec) }
     }
 }

@@ -17,7 +17,7 @@ object EventManager {
     /**
      * A list of even classes and logic to be executed when the event key is triggered
      */
-    private val listeners = Object2ObjectOpenHashMap<KClass<out Event>, (event: Event) -> Unit>()
+    private val listeners = mutableListOf<EventListener>()
 
     internal fun init() {
         val reflections = Reflections("io.rsbox.api")
@@ -26,8 +26,6 @@ object EventManager {
         classes.forEach { clazz ->
             events.add(clazz.kotlin)
         }
-
-        Api.server.logger.info { "Successfully registered ${events.size} API events." }
     }
 
     /**
@@ -36,8 +34,8 @@ object EventManager {
      * @param eventClass The class which the logic applies to
      * @param logic Lambda logic for the listener that will be executed when the event is triggered.
      */
-    internal fun registerListener(eventClass: KClass<out Event>, logic: Event.() -> Unit) {
-        listeners[eventClass] = logic
+    internal fun registerListener(listener: EventListener) {
+        listeners.add(listener)
     }
 
     /**
@@ -49,8 +47,8 @@ object EventManager {
     fun <T : Event> trigger(event: T): Boolean {
         // Execute the listeners
         listeners.forEach { listener ->
-            if(listener.key == event::class) {
-                listener.value(event)
+            if(listener.eventClass == event::class) {
+                listener.logic(event)
             }
         }
 

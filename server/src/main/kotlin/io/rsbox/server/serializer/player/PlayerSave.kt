@@ -6,8 +6,7 @@ import io.rsbox.server.Server
 import io.rsbox.server.ServerConstants
 import io.rsbox.server.config.SettingsSpec
 import io.rsbox.server.model.entity.Client
-import io.rsbox.server.model.entity.Player
-import io.rsbox.server.model.world.Tile
+import io.rsbox.api.world.Tile
 import io.rsbox.server.net.login.LoginRequest
 import org.mindrot.jbcrypt.BCrypt
 import java.io.File
