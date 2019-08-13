@@ -23,4 +23,15 @@ object Varbit {
     const val WINDMILL_FLOUR_COLLECTABLE = 5325
     const val WINDMILL_FLOUR_AMOUNT = 4920
     const val SMITHING_CURRENT_BAR = 3216
+    const val AIR_ALTAR = 607
+    const val MIND_ALTAR = 608
+    const val WATER_ALTAR = 609
+    const val EARTH_ALTAR = 610
+    const val FIRE_ALTAR = 611
+    const val BODY_ALTAR = 612
+    const val COSMIC_ALTAR = 613
+    const val NATURE_ALTAR = 615
+    const val LAW_ALTAR = 614
+    const val DEATH_ALTAR = 617
+    const val WRATH_ALTAR = 6220
 }
